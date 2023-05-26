@@ -1,0 +1,86 @@
+﻿@model EnglishCoucil.Areas.Admin.Data.LopHoc
+
+@{
+    ViewBag.Title = "Themlophocdacogv";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAD.cshtml";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm chương trình học</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="@Url.Action("HomeQL", "HomeAdmin", new { Area = "Admin" })">Home</a></li>
+                    <li class="breadcrumb-item active">Thêm chương trình học</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<div class="content">
+    <div class="container-fluid">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <b>Mã lớp học:</b>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control form-control-user"
+                               placeholder="Nhập mã lớp học" name="IDlophoc">
+                        <div style="color:red;">@ViewData["Loi1"]</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                   <b>Tên lớp học:</b>
+                    <div class="col-sm-12">
+                        <input type="text" class="form-control form-control-user"
+                               placeholder="Nhập tên lớp học" name="Tenlophoc">
+                        <div style="color:red;">@ViewData["Loi2"]</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                   <b>Giảng viên:</b>
+                    <div class="col-md-10">
+                        <p>ID giảng viên: @ViewBag.idgv</p>
+                        <p>Giảng viên: @ViewBag.namegv</p>
+                        <div>
+                            @Html.ActionLink("Thêm GV vào", "Themgvvaolop", new { idaction = 1 })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <b>Chương trình học:</b>
+                    <div class="col-md-10">
+                        <p>ID chương trình:@ViewBag.idct</p>
+                        <p>Chương trình: @ViewBag.namect</p>
+                        @Html.ActionLink("Thêm CT vào", "Themctvaolop", new { Idremen = ViewBag.idgv, idaction = 1 }, null)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Lophoc")
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

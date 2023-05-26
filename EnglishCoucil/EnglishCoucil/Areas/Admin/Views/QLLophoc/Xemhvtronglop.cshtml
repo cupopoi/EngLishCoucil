@@ -1,0 +1,101 @@
+﻿@model IEnumerable<EnglishCoucil.Areas.Admin.Data.HocVien>
+
+@{
+    ViewBag.Title = "Xemhvtronglop";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAD.cshtml";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách học viên lớp: @ViewBag.namelh</h1>
+                <h4>@ViewBag.count /30</h4>
+
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="@Url.Action("HomeQL", "HomeAdmin", new { Area = "Admin" })">Home</a></li>
+                    <li class="breadcrumb-item active">Danh sách học viên</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+@if (TempData["SuccessMessage"] != null)
+{
+    ViewBag.SuccessMessage = TempData["SuccessMessage"].ToString();
+    TempData.Remove("SuccessMessage");
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    ViewBag.SuccessMessage = TempData["SuccessMessage"].ToString();
+    TempData.Remove("SuccessMessage");
+}
+@if (TempData["AlertMessage"] != null)
+{
+    ViewBag.AlertMessage = TempData["AlertMessage"].ToString();
+    TempData.Remove("AlertMessage");
+}
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            STT
+        </th>
+
+        <th>
+            Mã học viên
+        </th>
+        <th>
+            Tên học viên
+        </th>
+        <th>
+            Cấp độ
+        </th>
+        <th></th>
+    </tr>
+    @{
+        int i = 0;
+    }
+    @foreach (var item in Model)
+    {
+        i++;
+        <tr class="search">
+            <th>
+                @i
+            </th>
+            <th>
+                @Html.DisplayFor(model => item.IDHocvien)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenHocVien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CapDo)
+            </td>
+            <td>
+                @Html.ActionLink("Add Score", "addScore", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocvien, IDaction = 1 })|
+                @Html.ActionLink("View Score", "viewScore", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocvien })|
+                @Html.ActionLink("Delete Student", "DeleteStudent", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocvien })
+            </td>
+        </tr>
+    }
+</table>
+<div style="text-align:center">
+
+    @Html.ActionLink("Back to list student null class", "themhvvaolop", new { IDlh = @ViewBag.Idlh })|
+    @Html.ActionLink("Back to list class", "Lophoc")
+</div>
