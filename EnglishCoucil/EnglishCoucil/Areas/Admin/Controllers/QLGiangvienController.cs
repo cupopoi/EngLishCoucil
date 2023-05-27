@@ -84,28 +84,13 @@ namespace EnglishCoucil.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Themgiangvien(FormCollection collection, GiangVien giangvien)
         {
-
-
-            var idgiangvien = collection["IDGiangvien"];
             var tengiangvien = collection["Tengiangvien"];
             var diachi = collection["DiaChi"];
             var sodt = collection["Phone"];
             var email = collection["Email"];
             var luong = collection["Luong"];
 
-            if (string.IsNullOrEmpty(idgiangvien))
-            {
-                ViewData["Loi1"] = "Vui lòng nhập mã giảng viên";
-            }
-            else if (!CheckInput(idgiangvien))
-            {
-                ViewData["Loi1"] = "Vui lòng nhập mã giảng viên là số và không quá 8 ký tự";
-            }
-            else if (CheckId(int.Parse(idgiangvien)))
-            {
-                ViewData["Loi1"] = "Mã giảng viên đã tồn tại";
-            }
-            else if (string.IsNullOrEmpty(tengiangvien))
+           if (string.IsNullOrEmpty(tengiangvien))
             {
                 ViewData["Loi2"] = "Vui lòng nhập tên giảng viên";
             }
@@ -135,7 +120,6 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             }
             else
             {
-                giangvien.IDGiangvien = int.Parse(idgiangvien);
                 giangvien.TenGiangVien = tengiangvien;
                 giangvien.DiaChi = diachi;
                 giangvien.SoDienThoai = sodt;

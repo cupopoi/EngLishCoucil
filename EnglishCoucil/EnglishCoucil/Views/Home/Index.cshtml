@@ -11,7 +11,11 @@
             <div class="input-group-append">
                 @if (Session["User"] != null)
                 {
-                    <a href="@Url.Action("EnrollStudy", "User", new { IDtk = Session["IDtk"] }, Request.Url.Scheme);" class="btn btn-secondary btn-lg px-4 px-lg-5 mx-auto">Enroll</a>
+                    <a href="@Url.Action("EnrollStudy", "User", new { IDtk = Session["IDtk"] }, Request.Url.Scheme)" class="btn btn-secondary btn-lg px-4 px-lg-5 mx-auto">JOIN</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Register", "User", null, Request.Url.Scheme)" class="btn btn-secondary btn-lg px-4 px-lg-5 mx-auto">JOIN</a>
                 }
             </div>
         </div>

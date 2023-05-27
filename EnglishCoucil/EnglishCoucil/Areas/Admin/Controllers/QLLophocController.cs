@@ -70,24 +70,14 @@ namespace EnglishCoucil.Areas.Admin.Controllers
         public ActionResult Themlophocdacoct(FormCollection collection, LopHoc lophoc, int Idremen, int IDct)
         {
 
-            var idlophoc = collection["IDLophoc"];
             var tenlophoc = collection["Tenlophoc"];
 
-            if (string.IsNullOrEmpty(idlophoc))
-            {
-                ViewData["Loi1"] = "Vui lòng nhập ID lớp học";
-            }
-            else if (string.IsNullOrEmpty(tenlophoc))
+           if (string.IsNullOrEmpty(tenlophoc))
             {
                 ViewData["Loi2"] = "Vui lòng nhập tên lớp học";
             }
-            else if (checkid(int.Parse(idlophoc)))
-            {
-                ViewData["Loi1"] = "ID lớp học đã tồn tại";
-            }
             else
             {
-                lophoc.IDLophoc = int.Parse(idlophoc);
                 lophoc.TenLopHoc = tenlophoc;
                 lophoc.IDGiangVien = Idremen;
                 lophoc.IDChuongTrinh = IDct;

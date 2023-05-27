@@ -39,7 +39,7 @@ CREATE TABLE [GiangVien] (
   Hinh VARCHAR(MAX),
   BangCap  NVARCHAR(MAX),
   Luong  FLOAT,
-  IDTaiKhoan INT,
+  IDTaiKhoan INT UNIQUE,
    FOREIGN KEY ([IDTaiKhoan]) REFERENCES [TaiKhoan]([IDTaiKhoan]),
 );
 
@@ -63,7 +63,7 @@ CREATE TABLE [HocVien] (
   Hinh NVARCHAR(MAX),
   IDTrangThai INT,
   CapDo NVARCHAR(50),
-  IDTaiKhoan INT,
+  IDTaiKhoan INT UNIQUE,
    FOREIGN KEY (IDTrangThai) REFERENCES [TrangThaiHV](IDTrangThai),
    FOREIGN KEY ([IDTaiKhoan]) REFERENCES [TaiKhoan]([IDTaiKhoan])
 );
@@ -130,13 +130,15 @@ INSERT INTO [Admin]
 VALUES (N'admin',N'admin');
 ------------THÊM TRẠNG THÁI HỌC VIÊN----------------
 INSERT INTO [TrangThaiHV]
-VALUES (1, N'Đang học');
+VALUES (1, N'Đăng ký');
 INSERT INTO [TrangThaiHV]
-VALUES (2, N'Bỏ học');
+VALUES (2, N'Đang học');
 INSERT INTO [TrangThaiHV]
-VALUES (3, N'Nợ học phí');
+VALUES (3, N'Bỏ học');
 INSERT INTO [TrangThaiHV]
-VALUES (4, N'Bảo lưu');
+VALUES (4, N'Nợ học phí');
+INSERT INTO [TrangThaiHV]
+VALUES (5, N'Bảo lưu');
 --UPDATE [TrangThaiHV] SET TenTrangThai = N'Đang học' WHERE IDTrangThai=1 ;
 ----------------------------------------------------
 ------------THÊM THỨ---------------
@@ -161,7 +163,8 @@ VALUES (112, N'Kiên',N'Châu thành','0976391970',N'kt78139@gmail.com',null,nul
 ---------------------------------------------
 ------------THÊM HỌC VIÊN----------------
 INSERT INTO [HocVien]
-VALUES (1112, N'Kiên Trần',2006/10/16,N'Châu thành Tây Ninh','0976391970',N'kt78139@gmail.com',null,1,'2.5 toeic',null);
+VALUES (1112, N'Kiên Trần',2006/10/16,N'Châu thành Tây Ninh','0976391970',N'kt78139@gmail.com',null,1,'2.5 toeic',1);
+
 INSERT INTO [HocVien]
 VALUES (11112, N'Kiên Trần1',2002/10/16,N'Châu thành Tây Ninh1','0976391970',N'kt781390@gmail.com',null,1,'2.5 toeic',null);
 ------------THÊM CHƯƠNG TRÌNH HỌC----------------
@@ -182,9 +185,9 @@ VALUES (111,1112,6.5,6.5,5.0,7.5);
 ----------------------------------
 ------------THÊM CHI TIẾT LỊCH HỌC----------------
 INSERT INTO [ChiTietLichHoc]
-VALUES (111,11);
+VALUES (111,1);
 INSERT INTO [ChiTietLichHoc]
-VALUES (111,13);
+VALUES (111,2);
 ----------------------------------
 -----------------------CHỌN BẢNG-------------------------
 select * from [TrangThaiHV]

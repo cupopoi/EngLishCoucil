@@ -2363,6 +2363,8 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Shared\LoginPartial.cshtml" />
     <Content Include="Views\User\EnrollStudy.cshtml" />
+    <Content Include="Views\User\StudentTimetable.cshtml" />
+    <Content Include="Views\User\viewScore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

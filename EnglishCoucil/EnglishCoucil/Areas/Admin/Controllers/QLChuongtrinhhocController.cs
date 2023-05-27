@@ -59,27 +59,13 @@ namespace EnglishCoucil.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Themchuongtrinh(FormCollection collection, ChuongTrinhHoc chuongtrinh)
         {
-
-            var idchuongtrinh = collection["IDchuongtrinh"];
             var tenchuongtrinh = collection["Tenchuongtrinh"];
             var sobuoihoc = collection["Sobuoihoc"];
             var thoiluong = collection["Thoiluong"];
             var giatien = collection["Giatien"];
             var mota = collection["Mota"];
 
-            if (string.IsNullOrEmpty(idchuongtrinh))
-            {
-                ViewData["Loi1"] = "Vui lòng nhập mã chương trình";
-            }
-            else if (!CheckInput(idchuongtrinh))
-            {
-                ViewData["Loi1"] = "Mã chương trình phải là số và không quá 8 ký tự";
-            }
-            else if (CheckId(int.Parse(idchuongtrinh)))
-            {
-                ViewData["Loi1"] = "Mã chương trình đã có";
-            }
-            else if (string.IsNullOrEmpty(tenchuongtrinh))
+           if (string.IsNullOrEmpty(tenchuongtrinh))
             {
                 ViewData["Loi2"] = "Vui lòng nhập tên chương trình";
             }
@@ -100,11 +86,11 @@ namespace EnglishCoucil.Areas.Admin.Controllers
                 ViewData["Loi6"] = "Vui lòng nhập mô tả";
             }
             else if
-                 (!string.IsNullOrEmpty(idchuongtrinh) && idchuongtrinh.Length <= 10 && !string.IsNullOrEmpty(tenchuongtrinh) &&
+                 (
                 !string.IsNullOrEmpty(sobuoihoc) && !string.IsNullOrEmpty(thoiluong) && !string.IsNullOrEmpty(giatien) &&
                 !string.IsNullOrEmpty(mota))
             {
-                chuongtrinh.IDChuongTrinh = int.Parse(idchuongtrinh);
+               
                 chuongtrinh.TenChuongTrinh = tenchuongtrinh;
                 chuongtrinh.SoBuoiHoc = sobuoihoc;
                 chuongtrinh.ThoiLuong = thoiluong;
@@ -176,7 +162,6 @@ namespace EnglishCoucil.Areas.Admin.Controllers
                 ChuongTrinhHoc chuongtrinh = data.ChuongTrinhHocs.SingleOrDefault(c => c.IDChuongTrinh == editchuongtrinh.IDChuongTrinh);
                 if (chuongtrinh != null)
                 {
-                    chuongtrinh.IDChuongTrinh = editchuongtrinh.IDChuongTrinh;
                     chuongtrinh.TenChuongTrinh = editchuongtrinh.TenChuongTrinh;
                     chuongtrinh.SoBuoiHoc = editchuongtrinh.SoBuoiHoc;
                     chuongtrinh.ThoiLuong = editchuongtrinh.ThoiLuong;

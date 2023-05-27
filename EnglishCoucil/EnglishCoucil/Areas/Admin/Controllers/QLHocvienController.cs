@@ -107,26 +107,12 @@ namespace EnglishCoucil.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Themhocvien(FormCollection collection, HocVien hocvien, int IDtrangthai)
         {
-            var idhocvien = collection["IDHocvien"];
             var tenhocvien = collection["Tenhocvien"];
             var diachi = collection["DiaChi"];
             var sodt = collection["Phone"];
             var email = collection["Email"];
 
-            if (string.IsNullOrEmpty(idhocvien))
-            {
-                ViewData["Loi1"] = "Vui lòng nhập mã học viên";
-            }
-            else if (!CheckInput(idhocvien))
-            {
-                ViewData["Loi1"] = "Vui lòng nhập mã học viên là số và không quá 8 ký tự";
-            }
-           
-            else if (CheckId(int.Parse(idhocvien)))
-            {
-                ViewData["Loi1"] = "Mã học viên đã tồn tại";
-            }
-            else if (string.IsNullOrEmpty(tenhocvien))
+            if (string.IsNullOrEmpty(tenhocvien))
             {
                 ViewData["Loi2"] = "Vui lòng nhập tên học viên";
             }
@@ -161,7 +147,6 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             }
             else
             {
-                hocvien.IDHocvien = int.Parse(idhocvien);
                 hocvien.TenHocVien = tenhocvien;
                 // Chuyển đổi chuỗi thành kiểu DateTime với định dạng "dd/MM/yyyy"
                 hocvien.NgaySinh = DateTime.ParseExact(Request.Form["NgaySinh"], "dd/MM/yyyy", CultureInfo.InvariantCulture);

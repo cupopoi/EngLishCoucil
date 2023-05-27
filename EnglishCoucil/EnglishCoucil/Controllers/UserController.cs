@@ -142,20 +142,30 @@ namespace EnglishCoucil.Controllers
                 TaiKhoan user = data.TaiKhoans.SingleOrDefault(n => n.TaiKhoan1 == Username && n.MatKhau == mahoamd5(Password));
                 if (user != null)
                 {
-                    Session["IDtk"] = user.IDTaiKhoan;
-                    Session["User"] = user;
-                    Session["User_name"] = user.TaiKhoan1;
-                    return RedirectToAction("Index", "Home");
-                }
-                else if (!checktk(Username))
-                {
-                    ViewBag.Thongbao = "UserName already exist!";
+                    // Lấy thông tin HocVien dựa trên IDTaiKhoan từ bảng TaiKhoan
+                    HocVien hocVien = data.HocViens.FirstOrDefault(hv => hv.IDTaiKhoan == user.IDTaiKhoan);
+                    if (hocVien != null)
+                    {
+                        Session["IDhv"] = hocVien.IDHocvien;
+                        Session["IDtk"] = user.IDTaiKhoan;
+                        Session["User"] = user;
+                        Session["User_name"] = user.TaiKhoan1;
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        // Trường hợp không tìm thấy thông tin HocVien
+                        ViewBag.Thongbao = "User does not exist!";
+                    }
                 }
                 else
+                {
                     ViewBag.Thongbao = "UserName or Password incorrect!";
+                }
             }
             return this.Login();
         }
+
         #endregion
 
         #region Log Off And Change Info when Login
@@ -233,7 +243,7 @@ namespace EnglishCoucil.Controllers
 
         #region Enroll study
         [HttpGet]
-        public ActionResult EnrollStudy(int? IDtk)
+        public ActionResult EnrollStudy()
         {
      
             return  View(); 
@@ -290,12 +300,13 @@ namespace EnglishCoucil.Controllers
                 hocvien.SoDienThoai = sodt;
                 hocvien.Email = email;
                 hocvien.Hinh = collection["Hinh"];
-
+                hocvien.IDTrangThai = 1;
+                hocvien.IDTaiKhoan = IDtk;
                 data.HocViens.InsertOnSubmit(hocvien);
                 data.SubmitChanges();
                 return RedirectToAction("Hocvien");
             }
-            return this.EnrollStudy(IDtk);
+            return this.EnrollStudy();
         }
         #endregion
 
@@ -324,8 +335,23 @@ namespace EnglishCoucil.Controllers
                     }
                 }
             }
-
+            if (listChiTietLichHoc.Count == 0)
+            {
+                ViewBag.Message = "There is no timetable for you, you are free.";
+            }
             return View(listChiTietLichHoc);
+        }
+        #endregion
+
+        #region Study score
+        public ActionResult viewScore( int IDhv)
+        {
+          
+            ViewBag.IDhv = IDhv;
+            string namehv = data.HocViens.FirstOrDefault(x => x.IDHocvien == IDhv).TenHocVien;
+            ViewBag.namehv = namehv;
+            var score = from sc in data.ChiTietLopHocs select sc;
+            return View(score);
         }
         #endregion
     }
