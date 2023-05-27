@@ -78,7 +78,7 @@
                             @if (Session["User"] != null)
                             {
                                 <a href="@Url.Action("StudentTimetable", "User", new { IDhv = Session["IDhv"] }, Request.Url.Scheme)" class="dropdown-item">Your Schedule</a>
-                                <a href="@Url.Action("viewScore", "User", new { IDhv = Session["IDhv"] }, Request.Url.Scheme)" class="dropdown-item">Your Score</a>
+                                <a href="@Url.Action("viewScore", "User", new { IDhv = Session["IDhv"], IDlh = Session["IDlh"] }, Request.Url.Scheme)" class="dropdown-item">Your Score</a>
                             }
                             else
                             {

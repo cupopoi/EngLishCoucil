@@ -146,11 +146,22 @@ namespace EnglishCoucil.Controllers
                     HocVien hocVien = data.HocViens.FirstOrDefault(hv => hv.IDTaiKhoan == user.IDTaiKhoan);
                     if (hocVien != null)
                     {
-                        Session["IDhv"] = hocVien.IDHocvien;
-                        Session["IDtk"] = user.IDTaiKhoan;
-                        Session["User"] = user;
-                        Session["User_name"] = user.TaiKhoan1;
-                        return RedirectToAction("Index", "Home");
+                        // Lấy IDLopHoc từ bảng ChiTietLopHoc dựa trên IDHocVien
+                        ChiTietLopHoc chiTietLopHoc = data.ChiTietLopHocs.FirstOrDefault(chitiet => chitiet.IDHocVien == hocVien.IDHocvien);
+                        if (chiTietLopHoc != null)
+                        {
+                            Session["IDlh"] = chiTietLopHoc.IDLophoc;
+                            Session["IDhv"] = hocVien.IDHocvien;
+                            Session["IDtk"] = user.IDTaiKhoan;
+                            Session["User"] = user;
+                            Session["User_name"] = user.TaiKhoan1;
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            // Trường hợp không tìm thấy thông tin ChiTietLopHoc
+                            ViewBag.Thongbao = "No class found!";
+                        }
                     }
                     else
                     {
@@ -165,6 +176,7 @@ namespace EnglishCoucil.Controllers
             }
             return this.Login();
         }
+
 
         #endregion
 
@@ -344,14 +356,27 @@ namespace EnglishCoucil.Controllers
         #endregion
 
         #region Study score
-        public ActionResult viewScore( int IDhv)
+        public ActionResult viewScore( int IDhv, int? IDlh)
         {
-          
             ViewBag.IDhv = IDhv;
-            string namehv = data.HocViens.FirstOrDefault(x => x.IDHocvien == IDhv).TenHocVien;
+            ViewBag.IDlh = IDlh;
+            string namelh = data.LopHocs.FirstOrDefault(x => x.IDLophoc == IDlh).TenLopHoc;
+            ViewBag.namelh = namelh;
+            string namehv = data.HocViens.FirstOrDefault(x => x.IDHocvien == IDhv)?.TenHocVien;
             ViewBag.namehv = namehv;
-            var score = from sc in data.ChiTietLopHocs select sc;
-            return View(score);
+            var score = data.ChiTietLopHocs.ToList();
+
+            if (score.Any())
+            {
+                return View(score);
+            }
+            else
+            {
+                // Không có điểm, thực hiện hành động khác, ví dụ: thông báo cho người dùng
+                ViewBag.Message = "You are not have score";
+                return View();
+            }
+
         }
         #endregion
     }
