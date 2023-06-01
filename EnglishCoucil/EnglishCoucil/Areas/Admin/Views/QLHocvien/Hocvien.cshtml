@@ -48,38 +48,38 @@
 {
     <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
 }
-<table class="table">
-    <thead>
-        <tr>
-            <th>Mã học viên</th>
-            <th>Tên</th>
-            <th>Ngày sinh</th>
-            <th>Số điện thoại</th>
-            <th>Email</th>
-            <th>Cấp độ</th>
-            <th>Trạng thái</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody class="search">
-        @foreach (var item in Model)
-        {
+<div class="card-body">
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@Html.DisplayFor(model => item.IDHocvien)</td>
-                <td>@Html.DisplayFor(modelItem => item.TenHocVien)</td>
-                <td>@item.NgaySinh.Value.ToString("dd/MM/yyyy")</td>
-                <td>@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
-                <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                <td>@Html.DisplayFor(modelItem => item.CapDo)</td>
-                <td>@Html.DisplayFor(modelItem => item.TrangThaiHV.TenTrangThai)</td>
-                <td>
-                    @Html.ActionLink("Edit", "Suahocvien", new { IDhv = item.IDHocvien }) |
-                    @Html.ActionLink("Details", "Xemchitiet", new { IDhv = item.IDHocvien }) |
-                    @Html.ActionLink("TimeTable", "StudentTimetable", new { IDhv = item.IDHocvien })|
-                    @Html.ActionLink("Delete", "Xoahocvien", "QLHocvien", new { IDhv = item.IDHocvien }, new { onclick = "return confirm('Khi xóa sẽ mất hết dữ liệu học viên đã học, bạn có chắc chắn muốn xóa học viên này?');" })
-
-                </td>
+                <th>Mã học viên</th>
+                <th>Tên</th>
+                <th>Ngày sinh</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Trạng thái</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody class="search">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => item.IDHocvien)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TenHocVien)</td>
+                    <td>@item.NgaySinh.Value.ToString("dd/MM/yyyy")</td>
+                    <td>@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TrangThaiHV.TenTrangThai)</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Suahocvien", new { IDhv = item.IDHocvien }) |
+                        @Html.ActionLink("Details", "Xemchitiet", new { IDhv = item.IDHocvien }) |
+                        @Html.ActionLink("TimeTable", "StudentTimetable", new { IDhv = item.IDHocvien })|
+                        @Html.ActionLink("Delete", "Xoahocvien", "QLHocvien", new { IDhv = item.IDHocvien }, new { onclick = "return confirm('Khi xóa sẽ mất hết dữ liệu học viên đã học, bạn có chắc chắn muốn xóa học viên này?');" })
+                        <a href=" @Url.Action("Suahocvien", "QLHocvien", new { IDhv = item.IDHocvien })" class="btn btn-sm btn-info">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

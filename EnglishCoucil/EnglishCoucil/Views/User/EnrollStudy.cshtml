@@ -3,71 +3,76 @@
     ViewBag.Title = "EnrollStudy";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row align-items-center justify-content-center">
-    <div class="col-lg-7">
-        <div class="section-title position-relative mb-4">
-            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Wanna Join Us?</h6>
-            <h1 class="display-4">Send Us A Infomation</h1>
-        </div>
-        <div class="contact-form">
-            <form>
-                <div class="row">
-                    <div class="col-6 form-group">
-                        <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your Name" name="Tenhocvien" required="required">
-                        <div style="color:red;">@ViewData["Loi2"]</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <h2 style="color:red; text-align:center">@ViewBag.Success</h2>
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-7">
+            <div class="section-title position-relative mb-4">
+                <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Wanna Join Us?</h6>
+                <h1 class="display-4">Send Us A Infomation</h1>
+            </div>
+            <div class="contact-form">
+                <form>
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your Name" name="Tenhocvien" required="required">
+                            <div style="color:red;">@ViewData["Loi2"]</div>
+                        </div>
+                        <div class="col-6 form-group">
+                            <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" id="txtNgaySinh" name="Ngaysinh" placeholder="Your Date of birth (dd/mm/yyyy)" required="required">
+                            <div style="color:red;">@ViewData["Loi3"]</div>
+                        </div>
                     </div>
-                    <div class="col-6 form-group">
-                        <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" id="txtNgaySinh" name="Ngaysinh" placeholder="Your Date of birth (dd/mm/yyyy)" required="required">
-                        <div style="color:red;">@ViewData["Loi3"]</div>
+                    <div class="form-group">
+                        <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your address" name="DiaChi" required="required">
+                        <div style="color:red;">@ViewData["Loi4"]</div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your address" name="DiaChi" required="required">
-                    <div style="color:red;">@ViewData["Loi4"]</div>
-                </div>
-                <div class="row">
-                    <div class="col-6 form-group">
-                        <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your Phone number" name="Phone" required="required">
-                        <div style="color:red;">@ViewData["Loi5"]</div>
+                    <div class="row">
+                        <div class="col-6 form-group">
+                            <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" placeholder="Your Phone number" name="Phone" required="required">
+                            <div style="color:red;">@ViewData["Loi5"]</div>
+                        </div>
+                        <div class="col-6 form-group">
+                            <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" name="Email" placeholder="Your Email" required="required">
+                            <div style="color:red;">@ViewData["Loi6"]</div>
+                        </div>
                     </div>
-                    <div class="col-6 form-group">
-                        <input type="text" class="form-control border-top-0 border-right-0 border-left-0 p-0" name="Email" placeholder="Your Email" required="required">
-                        <div style="color:red;">@ViewData["Loi6"]</div>
+                    <div class="form-group">
+                        @Html.EditorFor(model => model.Hinh, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="image-preview">
+                            <img id="pictureUpload" src="" alt="Hình ảnh" />
+                        </div>
+                        <input type="file" name="fileUpload" id="fileUpload" accept="image/*" style="display:none;" />
+                        <input type="button" id="btnUpload" value="Select" class="btn btn-primary py-2 px-4 d-none d-lg-block" />
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.EditorFor(model => model.Hinh, new { htmlAttributes = new { @class = "form-control" } })
-                    <div class="image-preview">
-                        <img id="pictureUpload" src="" alt="Hình ảnh" />
+                    <div class="text-center">
+                        <button class="btn btn-primary py-3 px-5" type="submit">Send</button>
                     </div>
-                    <input type="file" name="fileUpload" id="fileUpload" accept="image/*" style="display:none;" />
-                    <input type="button" id="btnUpload" value="Select" class="btn btn-primary py-2 px-4 d-none d-lg-block" />
-                </div>
-                <div class="text-center">
-                    <button class="btn btn-primary py-3 px-5" type="submit">Send</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-@*hình ảnh*@
-<style>
-    .image-preview {
-        max-width: 200px; /* Điều chỉnh kích thước tối đa của khung hình ảnh */
-        max-height: 200px;
-        overflow: hidden; /* Ẩn bớt nội dung hình ảnh */
-    }
-
-        .image-preview img {
-            max-width: 100%; /* Điều chỉnh kích thước tối đa của hình ảnh */
-            max-height: 100%;
-            object-fit: contain; /* Đảm bảo hình ảnh không bị méo khi thu nhỏ */
+}
+    @*hình ảnh*@
+    <style>
+        .image-preview {
+            max-width: 200px; /* Điều chỉnh kích thước tối đa của khung hình ảnh */
+            max-height: 200px;
+            overflow: hidden; /* Ẩn bớt nội dung hình ảnh */
         }
-</style>
 
-@section upload
+            .image-preview img {
+                max-width: 100%; /* Điều chỉnh kích thước tối đa của hình ảnh */
+                max-height: 100%;
+                object-fit: contain; /* Đảm bảo hình ảnh không bị méo khi thu nhỏ */
+            }
+    </style>
+
+    @section upload
 {
-    <script>
+        <script>
         $(function () {
              //khi người dùng nhấn vào nút có id là btnUpload
             $('#btnUpload').click(function () {
@@ -102,9 +107,9 @@
                 }
             });
         });
-    </script>
-}
+        </script>
+    }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

@@ -39,16 +39,10 @@
             </div>
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
-                    <a class="text-white px-2" href="">
+                    <a class="text-white px-2" href="https://www.facebook.com/profile.php?id=100008350417199">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a class="text-white px-2" href="">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a class="text-white px-2" href="">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a class="text-white px-2" href="">
+                    <a class="text-white px-2" href="https://www.instagram.com/kt_1711/">
                         <i class="fab fa-instagram"></i>
                     </a>
                     <a class="text-white pl-2" href="">
@@ -72,19 +66,12 @@
                 <div class="navbar-nav mx-auto py-0">
                     <a href="@Url.Action("Index", "Home", null , Request.Url.Scheme)" class="nav-item nav-link active">Home</a>
                     <a href="@Url.Action("About", "Home", null , Request.Url.Scheme)" class="nav-item nav-link">About</a>
+                    <a href="@Url.Action("AllCource", "User", null, Request.Url.Scheme)" class="nav-item nav-link">Cources</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu m-0">
-                            @if (Session["User"] != null)
-                            {
-                                <a href="@Url.Action("StudentTimetable", "User", new { IDhv = Session["IDhv"] }, Request.Url.Scheme)" class="dropdown-item">Your Schedule</a>
-                                <a href="@Url.Action("viewScore", "User", new { IDhv = Session["IDhv"], IDlh = Session["IDlh"] }, Request.Url.Scheme)" class="dropdown-item">Your Score</a>
-                            }
-                            else
-                            {
-                                 <a href="@Url.Action("Index", "Home", null , Request.Url.Scheme)" class="dropdown-item">Your Schedule</a>
-                                <a href="@Url.Action("Index", "Home", null , Request.Url.Scheme)" class="dropdown-item">Your Score</a>
-                            }
+                            <a href="@Url.Action("Index", "Home", null , Request.Url.Scheme)" class="dropdown-item">Introductor</a>
+                            <a href="@Url.Action("Index", "Home", null , Request.Url.Scheme)" class="dropdown-item">Our Features</a>
                         </div>
                     </div>
                 </div>
@@ -151,12 +138,7 @@
             <div class="row">
                 <div class="col-md-6 text-center text-md-left mb-3 mb-md-0">
                     <p class="m-0">
-                        Copyright &copy; <a class="text-white" href="#">Your Site Name</a>. All Rights Reserved.
-                    </p>
-                </div>
-                <div class="col-md-6 text-center text-md-right">
-                    <p class="m-0">
-                        Designed by <a class="text-white" href="https://htmlcodex.com">HTML Codex</a>
+                        Copyright &copy; <a class="text-white" href="@Url.Action("Index", "Home", null , Request.Url.Scheme)">DKT Couci</a>. All Rights Reserved.
                     </p>
                 </div>
             </div>

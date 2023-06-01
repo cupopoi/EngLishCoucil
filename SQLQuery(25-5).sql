@@ -5,19 +5,19 @@ create database TrungTamTA
 use TrungTamTA
 
 CREATE TABLE [Admin] (
-  [IDTaiKhoan] INT PRIMARY KEY IDENTITY (1,1),
+  [IDTaiKhoan] INT PRIMARY KEY IDENTITY ,
   [TaiKhoan] VARCHAR(50) ,
   [MatKhau] VARCHAR(50) NOT NULL,
 );
 
 CREATE TABLE [TaiKhoan] (
-  [IDTaiKhoan] INT PRIMARY KEY IDENTITY (1,1),
+  [IDTaiKhoan] INT PRIMARY KEY IDENTITY ,
   [TaiKhoan] VARCHAR(50) ,
   [MatKhau] VARCHAR(50) NOT NULL,
 );
 
 CREATE TABLE [ChuongTrinhHoc] (
-  IDChuongTrinh INT PRIMARY KEY IDENTITY (1,1),
+  IDChuongTrinh INT PRIMARY KEY IDENTITY ,
   TenChuongTrinh NVARCHAR(50),
   SoBuoiHoc NVARCHAR(50),
   ThoiLuong NVARCHAR(50),
@@ -31,7 +31,7 @@ CREATE TABLE [TrangThaiHV] (
 );
 
 CREATE TABLE [GiangVien] (
-  IDGiangvien INT PRIMARY KEY IDENTITY (1,1),
+  IDGiangvien INT PRIMARY KEY IDENTITY ,
   TenGiangVien NVARCHAR(50),
   DiaChi  NVARCHAR(MAX),
   SoDienThoai VARCHAR(20),
@@ -44,7 +44,7 @@ CREATE TABLE [GiangVien] (
 );
 
 CREATE TABLE [LopHoc] (
-  IDLophoc INT PRIMARY KEY IDENTITY (1,1),
+  IDLophoc INT PRIMARY KEY IDENTITY ,
   TenLopHoc NVARCHAR(50),
   IDGiangVien INT,
   IDChuongTrinh INT,
@@ -54,7 +54,7 @@ CREATE TABLE [LopHoc] (
 );
 
 CREATE TABLE [HocVien] (
-  IDHocvien INT PRIMARY KEY IDENTITY (1,1),
+  IDHocvien INT PRIMARY KEY IDENTITY ,
   TenHocVien NVARCHAR(50),
   NgaySinh DATETIME,
   DiaChi NVARCHAR(50),
@@ -62,8 +62,8 @@ CREATE TABLE [HocVien] (
   Email NVARCHAR(50) UNIQUE,
   Hinh NVARCHAR(MAX),
   IDTrangThai INT,
-  CapDo NVARCHAR(50),
-  IDTaiKhoan INT UNIQUE,
+  IDTaiKhoan INT,
+  NgayDangKy DATETIME,
    FOREIGN KEY (IDTrangThai) REFERENCES [TrangThaiHV](IDTrangThai),
    FOREIGN KEY ([IDTaiKhoan]) REFERENCES [TaiKhoan]([IDTaiKhoan])
 );
@@ -76,6 +76,8 @@ CREATE TABLE ChiTietLopHoc (
 	DiemViet FLOAT,
 	DiemDoc FLOAT,
 	DiemTB AS CEILING((DiemNghe + DiemNoi + DiemViet + DiemDoc) / 4.0 * 2) / 2.0,
+	[DaThanhToan] BIT,
+	[NgayNopTien] DATETIME,
 	PRIMARY KEY (IDLophoc, IDHocVien),
     FOREIGN KEY (IDHocVien) REFERENCES HocVien(IDHocVien),
     FOREIGN KEY (IDLophoc) REFERENCES LopHoc(IDLophoc)
@@ -86,7 +88,7 @@ CREATE TABLE [CacNgayTrongTuan] (
 );
  
 CREATE TABLE [LichHoc] (
-	IDLichhoc INT PRIMARY KEY IDENTITY (1,1),
+	IDLichhoc INT PRIMARY KEY IDENTITY ,
 	TGBatDau TIME,
     TGKetThuc TIME,
 	IDNgay INT,
@@ -104,33 +106,19 @@ CREATE TABLE [ChiTietLichHoc] (
     FOREIGN KEY (IDLophoc) REFERENCES LopHoc(IDLophoc),
 );
 
-----chưa làm  -----
-CREATE TABLE [PhuongThucThanhToan](
-	[IdThanhToan] INT PRIMARY KEY,
-	[TenPhuongThucThanhToan] NVARCHAR(50),
-);
-CREATE TABLE[HoaDonTT](
-	[IdHoaDon] INT PRIMARY KEY IDENTITY (1,1),
-	[NgayNopTien] DATETIME ,
-	[SoTien] INT,
-	[IdThanhToan] INT,
-	[IDHocVien] INT,
-	[IdLopHoc] INT,
-	[DaThanhToan] BIT,
-	FOREIGN KEY ([IdThanhToan]) REFERENCES [PhuongThucThanhToan]([IdThanhToan]),
-	 FOREIGN KEY (IDHocVien) REFERENCES HocVien(IDHocVien),
-    FOREIGN KEY (IDLophoc) REFERENCES LopHoc(IDLophoc)
-);
 
-
-----------THÊM DỮ LIỆU------------------
-----------------------------------THÊM DỮ LIỆU
+----------------------------------THÊM DỮ LIỆU--------------------------
 ------------THÊM ACCOUNT ADMIN----------------
 INSERT INTO [Admin]
 VALUES (N'admin',N'admin');
+INSERT INTO [TaiKhoan]
+VALUES (N'kientran',N'e10adc3949ba59abbe56e057f20f883e');
+INSERT INTO [TaiKhoan]
+VALUES (N'kientran1',N'e10adc3949ba59abbe56e057f20f883e');
+
 ------------THÊM TRẠNG THÁI HỌC VIÊN----------------
 INSERT INTO [TrangThaiHV]
-VALUES (1, N'Đăng ký');
+VALUES (1, N'Đăng ký học');
 INSERT INTO [TrangThaiHV]
 VALUES (2, N'Đang học');
 INSERT INTO [TrangThaiHV]
@@ -159,35 +147,36 @@ VALUES (7, N'Chủ Nhật');
 --------------------------------------------------------
 ------------THÊM GIẢNG VIÊN----------------
 INSERT INTO [GiangVien]
-VALUES (112, N'Kiên',N'Châu thành','0976391970',N'kt78139@gmail.com',null,null,100000,null);
+VALUES ( N'Kiên',N'Châu thành','0976391970',N'kt78139@gmail.com',null,null,100000,null);
 ---------------------------------------------
 ------------THÊM HỌC VIÊN----------------
+--UPDATE [HocVien] SET IDTaiKhoan = null WHERE IDTaiKhoan= 1  ;
+--drop table [HocVien];
 INSERT INTO [HocVien]
-VALUES (1112, N'Kiên Trần',2006/10/16,N'Châu thành Tây Ninh','0976391970',N'kt78139@gmail.com',null,1,'2.5 toeic',1);
-
+VALUES ( N'Kiên Trần',28/05/2004,N'Châu thành Tây Ninh','0976391970',N'kt78139@gmail.com',null,1,'Ielts 2.5',1,28/05/2023);
 INSERT INTO [HocVien]
-VALUES (11112, N'Kiên Trần1',2002/10/16,N'Châu thành Tây Ninh1','0976391970',N'kt781390@gmail.com',null,1,'2.5 toeic',null);
+VALUES ( N'Kiên Trần1',16/10/2002,N'Châu thành Tây Ninh1','0976391970',N'kt781390@gmail.com',null,1,'Ielts 2.5',null,null);
 ------------THÊM CHƯƠNG TRÌNH HỌC----------------
 INSERT INTO [ChuongTrinhHoc]
-VALUES (1, N'Toeic 2.5',N'2 Tuần',N'3 Tháng',10000,N'Dành cho các bạn TOEIC 2.5');
+VALUES ( N'Ielts 2.5',N'2',N'3',10000,N'Dành cho các bạn IELTS 2.5');
 -------------------------------------------------
 ------------THÊM LỊCH HỌC----------------
 INSERT INTO [LichHoc]
-VALUES ( N'07:00',N'09:00',1,16/10/2002);
+VALUES ( N'07:00',N'09:00',1,30/05/2023);
 --------------------------------------
 ------------THÊM LỚP HỌC----------------
 INSERT INTO [LopHoc]
-VALUES (111, N'TOEIC 2.5',112,1,30);
+VALUES ( N'Ielts 2.5',1,1,30);
 ------------CHI TIẾT LỚP HỌC----------------
 INSERT INTO [ChiTietLopHoc]
-VALUES (111,1112,6.5,6.5,5.0,7.5);
+VALUES (1,1,6.5,6.5,5.0,7.5);
 
 ----------------------------------
 ------------THÊM CHI TIẾT LỊCH HỌC----------------
 INSERT INTO [ChiTietLichHoc]
-VALUES (111,1);
+VALUES (1,1);
 INSERT INTO [ChiTietLichHoc]
-VALUES (111,2);
+VALUES (1,2);
 ----------------------------------
 -----------------------CHỌN BẢNG-------------------------
 select * from [TrangThaiHV]

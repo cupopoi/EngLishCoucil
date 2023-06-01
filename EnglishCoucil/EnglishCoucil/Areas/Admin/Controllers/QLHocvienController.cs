@@ -226,7 +226,6 @@ namespace EnglishCoucil.Areas.Admin.Controllers
                     hocvien.SoDienThoai = editHocvien.SoDienThoai;
                     hocvien.Email = editHocvien.Email;
                     hocvien.Hinh = editHocvien.Hinh;
-                    hocvien.CapDo = editHocvien.CapDo;
                     hocvien.IDTrangThai = editHocvien.IDTrangThai;
 
                     data.SubmitChanges();

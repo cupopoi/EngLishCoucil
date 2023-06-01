@@ -19,44 +19,48 @@
         </div>
     </div>
 </div>
+
 <!-- Header End -->
-<div class="d-flex align-items-center justify-content-center">
-    <div class="col-lg-7">
-        <div class="section-title position-relative mb-4">
-            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Score</h6>
-            <h1 class="display-">Class: @ViewBag.namelh</h1>
-        </div>
-        <div class="row pt-3 mx-0 justify-content-center text-center">
-            <div class="col-3 px-0">
-                <div class="bg-success text-center p-4">
-                    <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => model.FirstOrDefault().DiemNghe)</h1>
-                    <h6 class="text-uppercase text-white"><span class="d-block">Listen</span></h6>
-                </div>
+@foreach (var score in Model)
+{
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="col-lg-7">
+            <div class="section-title position-relative mb-4">
+                <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Score</h6>
+                <h1 class="display-">Class: @Html.DisplayFor(model => score.LopHoc.TenLopHoc)</h1>
             </div>
-            <div class="col-3 px-0">
-                <div class="bg-primary text-center p-4">
-                    <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => model.FirstOrDefault().DiemNoi)</h1>
-                    <h6 class="text-uppercase text-white"><span class="d-block">Speaking</span></h6>
+            <div class="row pt-3 mx-0 justify-content-center text-center">
+                <div class="col-3 px-0">
+                    <div class="bg-success text-center p-4">
+                        <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => score.DiemNghe)</h1>
+                        <h6 class="text-uppercase text-white"><span class="d-block">Listen</span></h6>
+                    </div>
                 </div>
-            </div>
-            <div class="col-3 px-0">
-                <div class="bg-secondary text-center p-4">
-                    <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => model.FirstOrDefault().DiemDoc)</h1>
-                    <h6 class="text-uppercase text-white"><span class="d-block">Reading</span></h6>
+                <div class="col-3 px-0">
+                    <div class="bg-primary text-center p-4">
+                        <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => score.DiemNoi)</h1>
+                        <h6 class="text-uppercase text-white"><span class="d-block">Speaking</span></h6>
+                    </div>
                 </div>
-            </div>
-            <div class="col-3 px-0">
-                <div class="bg-warning text-center p-4">
-                    <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => model.FirstOrDefault().DiemViet)</h1>
-                    <h6 class="text-uppercase text-white"><span class="d-block">Writing</span></h6>
+                <div class="col-3 px-0">
+                    <div class="bg-secondary text-center p-4">
+                        <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => score.DiemDoc)</h1>
+                        <h6 class="text-uppercase text-white"><span class="d-block">Reading</span></h6>
+                    </div>
                 </div>
-            </div>
-            <div class="col-3 px-0">
-                <div class="bg-warning text-center p-4">
-                    <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => model.FirstOrDefault().DiemTB)</h1>
-                    <h6 class="text-uppercase text-white"><span class="d-block">Total</span></h6>
+                <div class="col-3 px-0">
+                    <div class="bg-warning text-center p-4">
+                        <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => score.DiemViet)</h1>
+                        <h6 class="text-uppercase text-white"><span class="d-block">Writing</span></h6>
+                    </div>
+                </div>
+                <div class="col-3 px-0">
+                    <div class="bg-warning text-center p-4">
+                        <h1 class="text-white" data-toggle="counter-up">@Html.DisplayFor(model => score.DiemTB)</h1>
+                        <h6 class="text-uppercase text-white"><span class="d-block">Total</span></h6>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}

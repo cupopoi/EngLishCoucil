@@ -122,6 +122,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\QLChuongtrinhhocController.cs" />
     <Compile Include="Areas\Admin\Controllers\QLGiangvienController.cs" />
@@ -133,11 +134,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbQLtrungtam.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Admin\Data\UserAccount.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountInfo.cs" />
+    <Compile Include="Models\ViewAllCouceClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2298,14 +2302,6 @@
     <Content Include="Areas\Admin\Views\HomeAdmin\HomeQL.cshtml" />
     <Content Include="Areas\Admin\Views\QLHocvien\Hocvien.cshtml" />
     <Content Include="Areas\Admin\Views\QLHocvien\Themhocvien.cshtml" />
-    <Content Include="Areas\Admin\Data\dbQLtrungtam.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>dbQLtrungtam.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </Content>
-    <None Include="Areas\Admin\Data\dbQLtrungtam.dbml.layout">
-      <DependentUpon>dbQLtrungtam.dbml</DependentUpon>
-    </None>
     <Content Include="Areas\Admin\Views\QLHocvien\Xemchitiet.cshtml" />
     <Content Include="Areas\Admin\Views\QLHocvien\Suahocvien.cshtml" />
     <Content Include="Areas\Admin\Views\QLHocvien\StudentTimetable.cshtml" />
@@ -2334,6 +2330,15 @@
     <Content Include="Areas\Admin\Views\QLLichhoc\Themcahoc.cshtml" />
     <Content Include="ScriptsUser\lib\owlcarousel\LICENSE" />
     <Content Include="ScriptsUser\lib\waypoints\links.php" />
+    <Content Include="Areas\Admin\Views\Account\UserAccount.cshtml" />
+    <Content Include="Areas\Admin\Data\dbQLtrungtam.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>dbQLtrungtam.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Areas\Admin\Data\dbQLtrungtam.dbml.layout">
+      <DependentUpon>dbQLtrungtam.dbml</DependentUpon>
+    </None>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -2365,11 +2370,14 @@
     <Content Include="Views\User\EnrollStudy.cshtml" />
     <Content Include="Views\User\StudentTimetable.cshtml" />
     <Content Include="Views\User\viewScore.cshtml" />
+    <Content Include="Views\User\CourceShow.cshtml" />
+    <Content Include="Views\User\AllCource.cshtml" />
+    <Content Include="Views\User\EditInfo.cshtml" />
+    <Content Include="Views\User\showInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Content\images\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

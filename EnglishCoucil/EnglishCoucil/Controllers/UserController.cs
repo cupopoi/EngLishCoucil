@@ -1,4 +1,5 @@
-﻿using EnglishCoucil.Areas.Admin.Data;
+﻿using Antlr.Runtime.Misc;
+using EnglishCoucil.Areas.Admin.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,12 +10,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-
+using EnglishCoucil.Models;
 namespace EnglishCoucil.Controllers
 {
     public class UserController : Controller
     {
         dbQLtrungtamDataContext data = new dbQLtrungtamDataContext();
+
         #region MD5 encrypt
         // GET: User
         private string mahoamd5(string input)
@@ -84,7 +86,7 @@ namespace EnglishCoucil.Controllers
             {
                 ViewData["Loi2"] = "Password not Blank!";
             }
-       
+
             else if (checkkhoangtrang(Password))
             {
                 ViewData["Loi2"] = "Password shouldn't have space!";
@@ -131,51 +133,59 @@ namespace EnglishCoucil.Controllers
 
             if (String.IsNullOrEmpty(Username))
             {
-                ViewData["Loi1"] = "UserName not Blank!";
+                ViewData["Loi1"] = "Username not blank!";
             }
             else if (String.IsNullOrEmpty(Password))
             {
-                ViewData["Loi2"] = "Password not Blank!";
+                ViewData["Loi2"] = "Password not blank!";
             }
             else
             {
                 TaiKhoan user = data.TaiKhoans.SingleOrDefault(n => n.TaiKhoan1 == Username && n.MatKhau == mahoamd5(Password));
                 if (user != null)
                 {
+                    Session["IDtk"] = user.IDTaiKhoan;
+                    Session["User"] = user;
+                    Session["User_name"] = user.TaiKhoan1;
+
+                    bool hasClass = false;
+
                     // Lấy thông tin HocVien dựa trên IDTaiKhoan từ bảng TaiKhoan
                     HocVien hocVien = data.HocViens.FirstOrDefault(hv => hv.IDTaiKhoan == user.IDTaiKhoan);
                     if (hocVien != null)
                     {
-                        // Lấy IDLopHoc từ bảng ChiTietLopHoc dựa trên IDHocVien
+                        Session["IDhv"] = hocVien.IDHocvien;
+
+                        // Kiểm tra xem có thông tin lớp học hay không
                         ChiTietLopHoc chiTietLopHoc = data.ChiTietLopHocs.FirstOrDefault(chitiet => chitiet.IDHocVien == hocVien.IDHocvien);
                         if (chiTietLopHoc != null)
                         {
+                            hasClass = true;
                             Session["IDlh"] = chiTietLopHoc.IDLophoc;
-                            Session["IDhv"] = hocVien.IDHocvien;
-                            Session["IDtk"] = user.IDTaiKhoan;
-                            Session["User"] = user;
-                            Session["User_name"] = user.TaiKhoan1;
-                            return RedirectToAction("Index", "Home");
                         }
-                        else
-                        {
-                            // Trường hợp không tìm thấy thông tin ChiTietLopHoc
-                            ViewBag.Thongbao = "No class found!";
-                        }
+                    }
+
+                    // Kiểm tra nếu có lớp học hoặc không yêu cầu lớp học
+                    if (hasClass)
+                    {
+                        // Tiếp tục xử lý và chuyển hướng đến trang Index của HomeController
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        // Trường hợp không tìm thấy thông tin HocVien
-                        ViewBag.Thongbao = "User does not exist!";
+                        // Trường hợp không có lớp học
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 else
                 {
-                    ViewBag.Thongbao = "UserName or Password incorrect!";
+                    ViewBag.Thongbao = "Username or Password incorrect!";
                 }
             }
             return this.Login();
         }
+
+
 
 
         #endregion
@@ -257,19 +267,21 @@ namespace EnglishCoucil.Controllers
         [HttpGet]
         public ActionResult EnrollStudy()
         {
-     
-            return  View(); 
+            if (Session["User"] != null)
+            {
+            return View();
+            }
+            return RedirectToAction("Register");
         }
         [HttpPost]
-        public ActionResult EnrollStudy(FormCollection collection, HocVien hocvien, int IDtk)
+        public ActionResult EnrollStudy(FormCollection collection, HocVien hocvien,ChiTietLopHoc chiTietLopHoc, int IDtk,int IDlh)
         {
-            var idhocvien = collection["IDHocvien"];
             var tenhocvien = collection["Tenhocvien"];
             var diachi = collection["DiaChi"];
             var sodt = collection["Phone"];
             var email = collection["Email"];
 
-           if (string.IsNullOrEmpty(tenhocvien))
+            if (string.IsNullOrEmpty(tenhocvien))
             {
                 ViewData["Loi2"] = "Vui lòng nhập tên học viên";
             }
@@ -304,26 +316,46 @@ namespace EnglishCoucil.Controllers
             }
             else
             {
-                hocvien.IDHocvien = int.Parse(idhocvien);
+               
                 hocvien.TenHocVien = tenhocvien;
                 // Chuyển đổi chuỗi thành kiểu DateTime với định dạng "dd/MM/yyyy"
+                //Tạo học viên và lưu vào data 
                 hocvien.NgaySinh = DateTime.ParseExact(Request.Form["NgaySinh"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
                 hocvien.DiaChi = diachi;
                 hocvien.SoDienThoai = sodt;
                 hocvien.Email = email;
                 hocvien.Hinh = collection["Hinh"];
-                hocvien.IDTrangThai = 1;
+                hocvien.IDTrangThai = 2;
                 hocvien.IDTaiKhoan = IDtk;
+                DateTime currentDateTime = DateTime.Now;
+                hocvien.NgayDangKy = currentDateTime;
                 data.HocViens.InsertOnSubmit(hocvien);
                 data.SubmitChanges();
-                return RedirectToAction("Hocvien");
+                //từ học viên mới tạo lấy id hocvien và id lop hoc
+                var id = data.HocViens.Single(s => s.IDTaiKhoan == IDtk).IDHocvien;
+                if(id != 0)
+                {
+                 chiTietLopHoc.IDHocVien = id;
+                chiTietLopHoc.IDLophoc = IDlh;      
+                chiTietLopHoc.DaThanhToan = false;
+                data.ChiTietLopHocs.InsertOnSubmit(chiTietLopHoc);
+                data.SubmitChanges();
+                }
+                else
+                {
+                    ViewBag.Success = "Join UnSuccess";
+                    return RedirectToAction("EnrollStudy");
+                }
+                
+                ViewBag.Success = "Join Success";
+                return RedirectToAction("EnrollStudy");
             }
             return this.EnrollStudy();
         }
         #endregion
 
         #region Show time table 
-        public ActionResult StudentTimetable(int IDhv)
+        public ActionResult StudentTimetable(int? IDhv)
         {
             ViewBag.IDhv = IDhv;
             var nameHv = data.HocViens.FirstOrDefault(x => x.IDHocvien == IDhv).TenHocVien.ToString();
@@ -349,34 +381,198 @@ namespace EnglishCoucil.Controllers
             }
             if (listChiTietLichHoc.Count == 0)
             {
-                ViewBag.Message = "There is no timetable for you, you are free.";
+                ViewBag.Message = "There is no Schedule for you, you are free.";
             }
             return View(listChiTietLichHoc);
         }
         #endregion
 
         #region Study score
-        public ActionResult viewScore( int IDhv, int? IDlh)
+        public ActionResult viewScore(int IDhv)
         {
             ViewBag.IDhv = IDhv;
-            ViewBag.IDlh = IDlh;
-            string namelh = data.LopHocs.FirstOrDefault(x => x.IDLophoc == IDlh).TenLopHoc;
-            ViewBag.namelh = namelh;
             string namehv = data.HocViens.FirstOrDefault(x => x.IDHocvien == IDhv)?.TenHocVien;
             ViewBag.namehv = namehv;
-            var score = data.ChiTietLopHocs.ToList();
+            var scores = data.ChiTietLopHocs.Where(x => x.IDHocVien == IDhv).ToList();
+           return View(scores);
+        }
+        #endregion
 
-            if (score.Any())
+        #region All Cource
+        public ActionResult AllCource()
+        {
+            var chuongtrinh = new List<ViewAllCouceClass>();
+            foreach (var item in data.LopHocs) {
+                ViewAllCouceClass classData = new ViewAllCouceClass();
+                classData.IDLopHoc = item.IDLophoc;
+                classData.TenLopHoc = item?.TenLopHoc;
+                classData.TenChuongTrinh = item.ChuongTrinhHoc.TenChuongTrinh;
+                classData.ThoiLuong = item.ChuongTrinhHoc.ThoiLuong;
+                classData.SoBuoiHoc = item.ChuongTrinhHoc.SoBuoiHoc;
+                classData.SoLuong = item.SoLuong;
+                classData.MoTa = item.ChuongTrinhHoc.MoTa;
+                classData.GiaTien = item.ChuongTrinhHoc.GiaTien;
+                classData.Count = data.ChiTietLopHocs.Count(x => x.IDLophoc == item.IDLophoc);
+                chuongtrinh.Add(classData);
+            }
+            return View(chuongtrinh);
+        }
+        #endregion
+
+        #region Cource in Student
+        public ActionResult CourceShow(int? idlh, int IDtk, int IDhv)
+        {
+            ViewBag.IDlh = idlh;
+
+            //danh sách rỗng của ChiTietLichHoc được khởi tạo để lưu trữ thông tin về chương trình  học của sinh viên.
+            List<ChiTietLopHoc> listChiTietLopHoc = new List<ChiTietLopHoc>();
+            // Danh sách chuongtrinh của sinh viên được lấy từ cơ sở dữ liệu có IDHocVien bằng với IDhocvien được truyền vào.
+            List<ChiTietLopHoc> listchuongtrinh = data.ChiTietLopHocs.Where(item => item.IDHocVien == IDhv).ToList();
+            double? totalPrice = 0;
+            //lặp qua từng đối tượng ChiTietLopHoc trong danh sách.
+            foreach (ChiTietLopHoc item in listchuongtrinh)
             {
-                return View(score);
+                //LopHoc tương ứng với IDLophoc của đối tượng ChiTietLopHoc được lấy từ cơ sở dữ liệu với điều kiện là IDLophoc 
+                LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == item.IDLophoc);
+                if (lopHoc != null)
+                {
+                    //từ ChitietLichHoc lưu vào ChuongtrinhForClass tương ứng với IDLophoc đó được lấy từ cơ sở dữ liệu LopHoc
+                    List<ChiTietLopHoc> ChuongtrinhForClass = data.ChiTietLopHocs.Where(x => x.IDLophoc == lopHoc.IDLophoc).ToList();
+                    foreach (ChiTietLopHoc chuongtrinh in ChuongtrinhForClass)
+                    {
+                        ViewBag.Price = chuongtrinh.LopHoc.ChuongTrinhHoc.GiaTien;
+                        listChiTietLopHoc.Add(chuongtrinh);
+                        var totalCource = listChiTietLopHoc.Count;
+                        totalPrice += chuongtrinh.LopHoc.ChuongTrinhHoc.GiaTien;
+                        ViewBag.totalPrice = totalPrice;
+                        ViewBag.totalCource = totalCource;
+                        
+                    }
+                }
+            }
+            if (listChiTietLopHoc.Count == 0)
+            {
+                ViewBag.Message = "There is no timetable for you, you are free.";
+            }
+            return View(listChiTietLopHoc);
+        }
+        #endregion
+
+        #region Pay Cource
+        public ActionResult PayCource(int? idlh, int? IDtk, int? IDhv)
+        {
+            List<ChiTietLopHoc> listChiTietLopHoc = new List<ChiTietLopHoc>();
+            List<ChiTietLopHoc> listchuongtrinh = data.ChiTietLopHocs.Where(item => item.IDHocVien == IDhv).ToList();
+            foreach (ChiTietLopHoc item in listchuongtrinh)
+            {
+                LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == item.IDLophoc);
+                if (lopHoc != null)
+                {
+                    List<ChiTietLopHoc> ChuongtrinhForClass = data.ChiTietLopHocs.Where(x => x.IDLophoc == lopHoc.IDLophoc).ToList();
+                    foreach (ChiTietLopHoc payment in ChuongtrinhForClass)
+                    {
+                        if (payment.DaThanhToan == false)
+                        {
+                            payment.DaThanhToan = true;
+                            payment.NgayNopTien = DateTime.Now;
+                            data.SubmitChanges();
+                            Session["CheckPay"] = payment.DaThanhToan;
+                            return RedirectToAction("CourceShow", new { idlh, IDtk, IDhv });
+                        }
+                    }
+                   
+                }
+            }
+            Session["CheckPay"] = null;
+            return RedirectToAction("CourceShow", new { idlh, IDtk, IDhv });
+        }
+        #endregion
+
+        #region Show Info
+        public ActionResult showInfo( int IDtk)
+        {
+            var info = new AccountInfo();
+            var user = data.HocViens.FirstOrDefault(x => x.IDTaiKhoan == IDtk);
+            if (user != null)
+            {
+                info.IDHocVien = user.IDHocvien;
+                info.TenHocVien = user?.TenHocVien;
+                info.NgaySinh = user.NgaySinh;
+                info.DiaChi = user.DiaChi;
+                info.Email = user.Email;
+                info.Hinh = user.Hinh;
+                info.SoDienThoai = user.SoDienThoai;
+                info.NgayDangKy = user.NgayDangKy;
+                info.IDTaiKhoan = IDtk;
+                info.Username = user.TaiKhoan.TaiKhoan1;
             }
             else
             {
-                // Không có điểm, thực hiện hành động khác, ví dụ: thông báo cho người dùng
-                ViewBag.Message = "You are not have score";
-                return View();
+                var userName = data.TaiKhoans.FirstOrDefault(x => x.IDTaiKhoan == IDtk);
+                info.IDTaiKhoan = IDtk;
+                info.Username = userName.TaiKhoan1;
             }
+            return View(info);
+        }
+        #endregion
 
+        #region Change Info
+        [HttpGet]
+        public ActionResult EditInfo(int? IDhv, int IDtk)
+        {
+            var info = new AccountInfo();
+            var user= data.HocViens.FirstOrDefault(x => x.IDTaiKhoan == IDtk);
+            if (user != null)
+            {
+                info.IDHocVien = user.IDHocvien;
+                info.TenHocVien = user?.TenHocVien;
+                info.NgaySinh = user.NgaySinh;
+                info.DiaChi = user.DiaChi;
+                info.Email = user.Email;
+                info.Hinh = user.Hinh;
+                info.SoDienThoai = user.SoDienThoai;
+                info.NgayDangKy = user.NgayDangKy;
+                info.IDTaiKhoan = IDtk;
+                info.Username = user.TaiKhoan.TaiKhoan1;
+            }
+            else
+            {
+                var userName = data.TaiKhoans.FirstOrDefault(x => x.IDTaiKhoan == IDtk);
+                info.IDTaiKhoan = IDtk;
+                info.Username = userName.TaiKhoan1;
+            }
+            return View(info);
+        }
+
+        [HttpPost]
+        public ActionResult EditInfo(HocVien editHocvien,int? IDhv,  int IDtk)
+        {
+            if (ModelState.IsValid)
+            {
+                HocVien hocvien = data.HocViens.SingleOrDefault(c => c.IDHocvien == editHocvien.IDHocvien);
+                if (hocvien != null)
+                {
+                    hocvien.TenHocVien = editHocvien.TenHocVien;
+                    hocvien.NgaySinh = editHocvien.NgaySinh;
+                    hocvien.DiaChi = editHocvien.DiaChi;
+                    hocvien.SoDienThoai = editHocvien.SoDienThoai;
+                    hocvien.Email = editHocvien.Email;
+                    hocvien.Hinh = editHocvien.Hinh;
+                    hocvien.IDTrangThai = 2;
+                    data.SubmitChanges();
+                    ViewBag.Success = "Change Success";
+                    return RedirectToAction("showInfo", new { IDtk });
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+            }
+            else
+            {
+                ViewBag.Success= "No Infomation";
+                return View(editHocvien);
+            }
         }
         #endregion
     }

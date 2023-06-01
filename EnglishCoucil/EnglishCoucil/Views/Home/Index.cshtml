@@ -9,9 +9,10 @@
         <h1 class="text-white display-1 mb-5">Education Courses</h1>
         <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
             <div class="input-group-append">
+                @ViewBag.Success
                 @if (Session["User"] != null)
                 {
-                    <a href="@Url.Action("EnrollStudy", "User", new { IDtk = Session["IDtk"] }, Request.Url.Scheme)" class="btn btn-secondary btn-lg px-4 px-lg-5 mx-auto">JOIN</a>
+                    <a href="@Url.Action("AllCource", "User", new { IDtk = Session["IDtk"] }, Request.Url.Scheme)" class="btn btn-secondary btn-lg px-4 px-lg-5 mx-auto">JOIN</a>
                 }
                 else
                 {
@@ -33,17 +34,33 @@
             @foreach (var item in Model)
             {
                 <div class="team-item">
-                    <img class="img-fluid w-100" src="@item.Hinh" alt="">
+                    <div class="image-container" style=" width: 250px; /* Đặt kích thước chiều rộng của khung hình */
+                                                        height: 250px; /* Đặt kích thước chiều cao của khung hình */
+                                                        overflow: hidden; /* Không cho phép hình ảnh vượt qua kích thước khung */
+                                                        margin: 0 auto; /* Căn giữa khung hình */">
+                        <img class="img-fluid w-100" src="@item.Hinh" alt="">
+                    </div>
                     <div class="bg-light text-center p-4">
                         <h5 class="mb-3">@Html.DisplayFor(modelItem => item.TenHocVien)</h5>
-                        <p class="mb-2">Web Design & Development</p>
+
+
+                        Enrollment Date
+                        <p class="mb-2">
+                            @if (item.NgayDangKy != null)
+                            {
+
+                                var ngayFormatted = item.NgayDangKy.Value.ToString("dd/MM/yyyy");
+
+                                @Html.DisplayFor(model => ngayFormatted)
+                            }
+                        </p>
                         <div class="d-flex justify-content-center">
                             <a class="mx-1 p-1" href="#"><i class="fab fa-email">@Html.DisplayFor(modelItem => item.Email)</i></a>
                         </div>
                     </div>
+                    </div>
+                    }
                 </div>
-            }
-        </div>
     </div>
 </div>
 <!-- Team End -->
