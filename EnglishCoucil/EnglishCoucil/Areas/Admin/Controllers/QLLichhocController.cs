@@ -36,6 +36,12 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             var tgbatdau = collection["TGbatdau"];
             var tgketthuc = collection["TGketthuc"];
             var ngay = DateTime.ParseExact(collection["Ngay"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+          
+            TimeSpan tgBatDau;
+            TimeSpan tgKetThuc;
+           
+            bool isValidTGBatDau = TimeSpan.TryParse(tgbatdau, out tgBatDau);
+            bool isValidTGKetThuc = TimeSpan.TryParse(tgketthuc, out tgKetThuc);
             //DayOfWeek là chuyển đổi thứ sang số từ 0-6 tương ứng chủ nhật - thứ 7
             var idNgay = ((int)ngay.DayOfWeek + 6) % 7 + 1;
 
@@ -43,6 +49,14 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             if (existingLichHoc != null)
             {
                 ViewData["Loi1"] = "Ca học đã có";
+            }
+            else if (!isValidTGBatDau || !isValidTGKetThuc)
+            {
+                ViewData["Loi1"] = "Nhập lại giờ";
+            }
+            else if (!isValidTGBatDau || !isValidTGKetThuc)
+            {
+                ViewData["Loi2"] = "Nhập lại giờ";
             }
             else
             {

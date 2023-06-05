@@ -26,9 +26,7 @@
     ViewBag.AlertMessage = TempData["AlertMessage"].ToString();
     TempData.Remove("AlertMessage");
 }
-<p style="text-align:center;">
-    @Html.ActionLink("Thêm lớp học", "Themlophoc", "QLLophoc")
-</p>
+
 @if (ViewBag.AlertMessage != null)
 {
     <div class="alert alert-danger">@ViewBag.AlertMessage</div>

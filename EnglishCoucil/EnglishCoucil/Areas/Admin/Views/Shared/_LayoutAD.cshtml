@@ -171,7 +171,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-                        with font-awesome or any other icon font library -->
+    with font-awesome or any other icon font library -->
                         <li class="nav-header" style="text-align:center">MANAGE</li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -209,7 +209,7 @@
                                     <a href="#" class="nav-link">
                                         <i class="fa fa-user-circle nav-icon"></i>
                                         <p>
-                                             Giảng viên 
+                                            Giảng viên
                                             <i class="fas fa-angle-left right"></i>
                                         </p>
                                     </a>
@@ -313,7 +313,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <!--CA HỌC-->
+                        <!--LỊCH HỌC-->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-ellipsis-h nav-icon"></i>
@@ -331,7 +331,25 @@
                                 </li>
                             </ul>
                         </li>
-                      </ul>
+                        <!--THỐNG KÊ-->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="fas fa-ellipsis-h nav-icon"></i>
+                                <p>
+                                    - Thống kê -
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("StaticView", "Statistics", new { Area = "Admin" })" class="nav-link">
+                                        <i class="far fa-plus-square nav-icon"></i>
+                                        <p>Xem thống kê</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
             </div>

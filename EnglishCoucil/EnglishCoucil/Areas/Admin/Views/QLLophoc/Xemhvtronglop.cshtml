@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EnglishCoucil.Areas.Admin.Data.HocVien>
+﻿@model IEnumerable<EnglishCoucil.Areas.Admin.Data.ChiTietLopHoc>
 
 @{
     ViewBag.Title = "Xemhvtronglop";
@@ -63,7 +63,10 @@
             Tên học viên
         </th>
         <th>
-            Cấp độ
+            Lớp
+        </th>
+        <th>
+            Học phí
         </th>
         <th></th>
     </tr>
@@ -78,18 +81,31 @@
                 @i
             </th>
             <th>
-                @Html.DisplayFor(model => item.IDHocvien)
+                @Html.DisplayFor(model => item.IDHocVien)
             </th>
             <td>
-                @Html.DisplayFor(modelItem => item.TenHocVien)
+                @Html.DisplayFor(modelItem => item.HocVien.TenHocVien)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CapDo)
+                @Html.DisplayFor(modelItem => item.LopHoc.TenLopHoc)
             </td>
+            @if (item.DaThanhToan != false)
+            {
+                <td> <a href="@Url.Action("Status","QLLophoc",new {area = "Admin", IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien })" class="btn btn-sm btn-success"><i class="fas fa-toggle-on"></i></a></td>
+            }
+            else
+            {
+                <td>
+                    <a href="@Url.Action("Status", "QLLophoc", new { area = "Admin", IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien })" class="btn btn-sm btn-danger"><i class="fas fa-toggle-off"></i></a>
+
+                </td>
+            }
+
+
             <td>
-                @Html.ActionLink("Add Score", "addScore", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocvien, IDaction = 1 })|
-                @Html.ActionLink("View Score", "viewScore", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocvien })|
-                @Html.ActionLink("Delete Student", "DeleteStudent", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocvien })
+                <a href=" @Url.Action("addScore", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien, IDaction = 1 })" class="btn btn-sm btn-info">Add Score</a>
+                <a href=" @Url.Action("viewScore", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien })" class="btn btn-sm btn-info">View Score</a>
+                <a href=" @Url.Action("DeleteStudent", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien })" class="btn btn-sm btn-danger">Delete Student</a>
             </td>
         </tr>
     }

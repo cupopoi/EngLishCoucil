@@ -86,9 +86,11 @@
                         @Html.DisplayFor(modelItem => item.Luong)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Suagiangvien", new { IDgv = item.IDGiangvien }) |
-                        @Html.ActionLink("Details", "Xemchitiet", new { IDgv = item.IDGiangvien }) |
-                        @Html.ActionLink("Delete", "Xoagiangvien", new { IDgv = item.IDGiangvien },new { onclick = "return confirm('Bạn có chắc chắn muốn xóa?');" })|
+                        <a href=" @Url.Action("Suagiangvien", "QLGiangvien", new { IDgv = item.IDGiangvien })" class="btn btn-sm btn-info">Edit</a>
+                        <a href=" @Url.Action("Xemchitiet", "QLGiangvien", new { IDgv = item.IDGiangvien })" class="btn btn-sm btn-dark">Detail</a>
+                        <a href="@Url.Action("Xoagiangvien", "QLGiangvien", new { IDgv = item.IDGiangvien })" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                            <i class="btn btn-sm btn-danger">Del</i>
+                        </a>
                         @{
                             bool isValid = true;
                             if (item.IDGiangvien == 0 || ViewBag.idaction == 0)
@@ -99,7 +101,7 @@
 
                         @if (isValid && ViewBag.idaction == 1)
                         {
-                            @Html.ActionLink("AddToClass", "Themlophocdacogv", "QLLophoc", new { IDgv = item.IDGiangvien }, null)
+                            <a href=" @Url.Action("Themlophocdacogv", "QLLophoc", new { IDgv = item.IDGiangvien })" class="btn btn-sm btn-info">AddToClass</a>
                         }
                         else
                         {
@@ -107,7 +109,8 @@
                         }
                         @if (isValid && ViewBag.idaction == 2)
                         {
-                            @Html.ActionLink("AddToClass", "Sualophoccogv", "QLLophoc", new { IDgv = item.IDGiangvien, IDlh = ViewBag.idlh }, null)
+                            <a href=" @Url.Action("Sualophoccogv", "QLLophoc", new { IDgv = item.IDGiangvien, IDlh = ViewBag.idlh  })" class="btn btn-sm btn-info">AddToClass</a>
+                           
                         }
                         else
                         {

@@ -1,4 +1,5 @@
 ﻿using EnglishCoucil.Areas.Admin.Data;
+using PayPal.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -207,7 +208,8 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             ViewBag.Idlh = IDlh;
             string namelh = data.LopHocs.FirstOrDefault(x => x.IDLophoc == IDlh).TenLopHoc;
             ViewBag.namelh = namelh;
-            bool checkSL = data.ChiTietLopHocs.Count(x => x.IDLophoc == IDlh) >= 30;
+            int? slMax = data.LopHocs.FirstOrDefault(x => x.IDLophoc == IDlh).SoLuong;
+            bool checkSL = data.ChiTietLopHocs.Count(x => x.IDLophoc == IDlh) >= slMax;
             if (checkSL)
             {
                 TempData["AlertMessage"] = "Lớp đầy";
@@ -217,7 +219,7 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             {
                 //!data.ChiTietLopHocs.Any(ct => cxt.IDHocVien == hv.IDHocvien) để lọc ra các học viên không có bản ghi tương ứng trong bảng ChiTietLopHoc.
                 var hocvienList = data.HocViens.Where(hv => !data.ChiTietLopHocs.Any(ct => ct.IDHocVien == hv.IDHocvien || (ct.IDHocVien == hv.IDHocvien && ct.DiemTB == null))).ToList();
-                return View(hocvienList);
+                return View(hocvienList); 
             }
         }
         // nút xem danh sách học sinh trong lớp
@@ -227,17 +229,39 @@ namespace EnglishCoucil.Areas.Admin.Controllers
 
             var namelh = data.LopHocs.FirstOrDefault(x => x.IDLophoc == IDlh)?.TenLopHoc;
             ViewBag.namelh = namelh;
-            List<HocVien> hocvienList = new List<HocVien>();
+            List<ChiTietLopHoc> hocvienList = new List<ChiTietLopHoc>();
             List<ChiTietLopHoc> listIdHocVien = data.ChiTietLopHocs.Where(item => item.IDLophoc == IDlh).ToList();
             foreach (ChiTietLopHoc item in listIdHocVien)
             {
-                HocVien hocVien = data.HocViens.SingleOrDefault(x => x.IDHocvien == item.IDHocVien);
+                ChiTietLopHoc hocVien = data.ChiTietLopHocs.FirstOrDefault(x => x.IDHocVien == item.IDHocVien);
                 hocvienList.Add(hocVien);
             }
             int soHocSinh = hocvienList.Count;
             ViewBag.count = soHocSinh;
             return View(hocvienList);
         }
+        public ActionResult Status(int? IDlh,int? IDhv)
+        {
+
+            ChiTietLopHoc chiTietLopHoc = data.ChiTietLopHocs.FirstOrDefault(x => x.IDHocVien == IDhv && x.IDLophoc == IDlh);
+            //dùng toán tử 3 ngôi biến = biểu thức?biểu thức 2: biểu thức 3; (nếu biểu thức 1 đúng trả về biểu thức 2 cỏn sai thì trả bt3 ) 
+            chiTietLopHoc.DaThanhToan = (chiTietLopHoc.DaThanhToan == false) ? true : false;
+            if (chiTietLopHoc.DaThanhToan == false)
+            {
+                chiTietLopHoc.NgayNopTien = null;
+                chiTietLopHoc.HocVien.IDTrangThai = 1;
+            }
+            else
+            {
+                chiTietLopHoc.NgayNopTien = DateTime.Now;
+                chiTietLopHoc.HocVien.IDTrangThai = 2;
+            }
+            
+            UpdateModel(chiTietLopHoc);
+            data.SubmitChanges();
+            return RedirectToAction("Xemhvtronglop", new { IDlh });
+        }
+
 
 
         //nút action AddToClass
@@ -246,6 +270,7 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             ChiTietLopHoc hocvien = new ChiTietLopHoc();
             hocvien.IDLophoc = IDlh;
             hocvien.IDHocVien = IDhv;
+            hocvien.DaThanhToan = false;
             data.ChiTietLopHocs.InsertOnSubmit(hocvien);
             data.SubmitChanges();
             return RedirectToAction("themhvvaolop", new { IDlh });
@@ -324,13 +349,17 @@ namespace EnglishCoucil.Areas.Admin.Controllers
         {
             ViewBag.IDlh = IDlh;
             ViewBag.IDhv = IDhv;
-            string namelh = data.LopHocs.FirstOrDefault(x => x.IDLophoc == IDlh).TenLopHoc;
+
+            string namelh = data.LopHocs.FirstOrDefault(x => x.IDLophoc == IDlh)?.TenLopHoc;
             ViewBag.namelh = namelh;
-            string namehv = data.HocViens.FirstOrDefault(x => x.IDHocvien == IDhv).TenHocVien;
+
+            string namehv = data.HocViens.FirstOrDefault(x => x.IDHocvien == IDhv)?.TenHocVien;
             ViewBag.namehv = namehv;
-            var score = from sc in data.ChiTietLopHocs select sc;
+
+            var score = data.ChiTietLopHocs.Where(sc => sc.IDLophoc == IDlh && sc.HocVien.IDHocvien == IDhv).ToList();
             return View(score);
         }
+
 
         //thêm lớp học vào ca học 
         [HttpGet]

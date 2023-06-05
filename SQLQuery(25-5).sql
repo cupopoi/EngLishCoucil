@@ -169,7 +169,8 @@ INSERT INTO [LopHoc]
 VALUES ( N'Ielts 2.5',1,1,30);
 ------------CHI TIẾT LỚP HỌC----------------
 INSERT INTO [ChiTietLopHoc]
-VALUES (1,1,6.5,6.5,5.0,7.5);
+VALUES (1,1,6.5,6.5,5.0,7.5,0,null);
+--UPDATE [ChiTietLopHoc] SET DaThanhToan = 0 WHERE IDHocVien= 1  ;
 
 ----------------------------------
 ------------THÊM CHI TIẾT LỊCH HỌC----------------

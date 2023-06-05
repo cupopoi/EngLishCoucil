@@ -77,3 +77,5 @@ D:\HUTECH\Đồ án cơ sở\EnglishCoucil\EnglishCoucil\EnglishCoucil\obj\Debug
 D:\HUTECH\Đồ án cơ sở\EnglishCoucil\EnglishCoucil\EnglishCoucil\obj\Debug\EnglishCoucil.csproj.CopyComplete
 D:\HUTECH\Đồ án cơ sở\EnglishCoucil\EnglishCoucil\EnglishCoucil\obj\Debug\EnglishCoucil.dll
 D:\HUTECH\Đồ án cơ sở\EnglishCoucil\EnglishCoucil\EnglishCoucil\obj\Debug\EnglishCoucil.pdb
+D:\HUTECH\Đồ án cơ sở\EnglishCoucil\EnglishCoucil\EnglishCoucil\bin\PayPal.dll
+D:\HUTECH\Đồ án cơ sở\EnglishCoucil\EnglishCoucil\EnglishCoucil\bin\PayPal.xml

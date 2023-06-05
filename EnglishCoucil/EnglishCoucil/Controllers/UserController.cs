@@ -11,6 +11,9 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using EnglishCoucil.Models;
+using System.Data.Linq;
+using PayPal.Api;
+
 namespace EnglishCoucil.Controllers
 {
     public class UserController : Controller
@@ -420,42 +423,32 @@ namespace EnglishCoucil.Controllers
         #endregion
 
         #region Cource in Student
-        public ActionResult CourceShow(int? idlh, int IDtk, int IDhv)
+        public ActionResult CourceShow()
         {
-            ViewBag.IDlh = idlh;
-
-            //danh sách rỗng của ChiTietLichHoc được khởi tạo để lưu trữ thông tin về chương trình  học của sinh viên.
-            List<ChiTietLopHoc> listChiTietLopHoc = new List<ChiTietLopHoc>();
-            // Danh sách chuongtrinh của sinh viên được lấy từ cơ sở dữ liệu có IDHocVien bằng với IDhocvien được truyền vào.
-            List<ChiTietLopHoc> listchuongtrinh = data.ChiTietLopHocs.Where(item => item.IDHocVien == IDhv).ToList();
+            List<ChiTietLopHoc> listChiTietLopHoc = data.ChiTietLopHocs.Where(item => item.IDHocVien == (int)Session["IDhv"]).ToList();
             double? totalPrice = 0;
-            //lặp qua từng đối tượng ChiTietLopHoc trong danh sách.
-            foreach (ChiTietLopHoc item in listchuongtrinh)
+
+            foreach (ChiTietLopHoc item in listChiTietLopHoc)
             {
-                //LopHoc tương ứng với IDLophoc của đối tượng ChiTietLopHoc được lấy từ cơ sở dữ liệu với điều kiện là IDLophoc 
                 LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == item.IDLophoc);
                 if (lopHoc != null)
                 {
-                    //từ ChitietLichHoc lưu vào ChuongtrinhForClass tương ứng với IDLophoc đó được lấy từ cơ sở dữ liệu LopHoc
-                    List<ChiTietLopHoc> ChuongtrinhForClass = data.ChiTietLopHocs.Where(x => x.IDLophoc == lopHoc.IDLophoc).ToList();
-                    foreach (ChiTietLopHoc chuongtrinh in ChuongtrinhForClass)
-                    {
-                        ViewBag.Price = chuongtrinh.LopHoc.ChuongTrinhHoc.GiaTien;
-                        listChiTietLopHoc.Add(chuongtrinh);
-                        var totalCource = listChiTietLopHoc.Count;
-                        totalPrice += chuongtrinh.LopHoc.ChuongTrinhHoc.GiaTien;
-                        ViewBag.totalPrice = totalPrice;
-                        ViewBag.totalCource = totalCource;
-                        
-                    }
+                    item.LopHoc = lopHoc; // Gán đối tượng LopHoc cho ChiTietLopHoc để sử dụng trong view
+                    totalPrice += lopHoc.ChuongTrinhHoc.GiaTien;
                 }
             }
+
+            ViewBag.totalPrice = totalPrice;
+            ViewBag.totalCource = listChiTietLopHoc.Count;
+
             if (listChiTietLopHoc.Count == 0)
             {
                 ViewBag.Message = "There is no timetable for you, you are free.";
             }
+
             return View(listChiTietLopHoc);
         }
+
         #endregion
 
         #region Pay Cource
@@ -477,6 +470,7 @@ namespace EnglishCoucil.Controllers
                             payment.NgayNopTien = DateTime.Now;
                             data.SubmitChanges();
                             Session["CheckPay"] = payment.DaThanhToan;
+                            ViewBag.Message = "Payment Success";
                             return RedirectToAction("CourceShow", new { idlh, IDtk, IDhv });
                         }
                     }
@@ -486,6 +480,202 @@ namespace EnglishCoucil.Controllers
             Session["CheckPay"] = null;
             return RedirectToAction("CourceShow", new { idlh, IDtk, IDhv });
         }
+        public ActionResult paySuccess()
+        {
+            return View();
+        }
+
+        #endregion
+
+        #region Pay online
+        //private double TongTien()
+        //{
+        //    double? sum = 0;
+        //    List<ChiTietLopHoc> listChiTietLopHoc = new List<ChiTietLopHoc>();
+        //    List<ChiTietLopHoc> listchuongtrinh = data.ChiTietLopHocs.Where(item => item.IDHocVien == (int)Session["IDhv"]).ToList();
+        //    foreach (ChiTietLopHoc item in listchuongtrinh)
+        //    {
+        //        LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == item.IDLophoc);
+        //        if (lopHoc != null)
+        //        {
+        //            List<ChiTietLopHoc> ChuongtrinhForClass = data.ChiTietLopHocs.Where(x => x.IDLophoc == lopHoc.IDLophoc).ToList();
+        //            foreach (ChiTietLopHoc payment in ChuongtrinhForClass)
+        //            {
+        //                if (payment.DaThanhToan != false)
+        //                {
+        //                    sum += payment.LopHoc.ChuongTrinhHoc.GiaTien;
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //    return double.Parse(sum.ToString());
+        //}
+        //public ActionResult PaymentWithPaypal()
+        //{
+        //    APIContext apiContext = PaypalConfiguration.GetAPIContext();
+        //    try
+        //    {
+        //        string payerId = Request.Params["PayerID"];
+        //        if (string.IsNullOrEmpty(payerId))
+        //        {
+        //            string baseURI = Request.Url.Scheme + "://" + Request.Url.Authority + "/User/PaymentWithPaypal?";
+
+        //            var guid = Convert.ToString((new Random()).Next(100000));
+
+        //            var createdPayment = this.CreatePayment(apiContext, baseURI + "guid=" + guid);
+
+        //            var links = createdPayment.links.GetEnumerator();
+        //            string paypalRedirectUrl = null;
+        //            while (links.MoveNext())
+        //            {
+        //                Links lnk = links.Current;
+        //                if (lnk.rel.ToLower().Trim().Equals("approval_url"))
+        //                {
+        //                    paypalRedirectUrl = lnk.href;
+        //                }
+        //            }
+
+        //            Session.Add(guid, createdPayment.id);
+        //            return Redirect(paypalRedirectUrl);
+        //        }
+        //        else
+        //        {
+        //            var guid = Request.Params["guid"];
+        //            var executedPayment = ExecutePayment(apiContext, payerId, Session[guid] as string);
+
+        //            if (executedPayment.state.ToLower() != "approved")
+        //            {
+        //                throw new Exception();
+        //            }
+        //            else
+        //            {
+        //                List<ChiTietLopHoc> listChiTietLopHoc = new List<ChiTietLopHoc>();
+        //                List<ChiTietLopHoc> listchuongtrinh = data.ChiTietLopHocs.Where(item => item.IDHocVien == (int)Session["IDhv"]).ToList();
+        //                foreach (ChiTietLopHoc item in listchuongtrinh)
+        //                {
+        //                    LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == item.IDLophoc);
+        //                    if (lopHoc != null)
+        //                    {
+        //                        List<ChiTietLopHoc> ChuongtrinhForClass = data.ChiTietLopHocs.Where(x => x.IDLophoc == lopHoc.IDLophoc).ToList();
+        //                        foreach (ChiTietLopHoc payment in ChuongtrinhForClass)
+        //                        {
+        //                            if (payment.DaThanhToan == false)
+        //                            {
+        //                                payment.DaThanhToan = true;
+        //                                payment.NgayNopTien = DateTime.Now;
+        //                                data.SubmitChanges();
+        //                                Session["CheckPay"] = payment.DaThanhToan;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewBag.Loi = ex.Message;
+        //        ViewBag.Error = ex.StackTrace;
+        //        return View("payError");
+        //    }
+
+        //    return RedirectToAction("paySuccess");
+        //}
+
+        //private PayPal.Api.Payment payment;
+
+        //private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
+        //{
+        //    var paymentExecution = new PaymentExecution()
+        //    {
+        //        payer_id = payerId
+        //    };
+        //    this.payment = new Payment()
+        //    {
+        //        id = paymentId
+        //    };
+        //    return this.payment.Execute(apiContext, paymentExecution);
+        //}
+
+        //private Payment CreatePayment(APIContext apiContext, string redirectUrl)
+        //{
+        //    // Tạo itemList và thêm các item vào itemList
+        //    var itemList = new ItemList()
+        //    {
+        //        items = new List<Item>()
+        //    };
+
+        //    LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == (int)Session["IDlh"]);
+        //    if (lopHoc != null)
+        //    {
+        //        List<ChiTietLopHoc> ChuongtrinhForClass = data.ChiTietLopHocs.Where(x => x.IDLophoc == lopHoc.IDLophoc).ToList();
+        //        foreach (ChiTietLopHoc payment in ChuongtrinhForClass)
+        //        {
+        //            decimal itemPrice = decimal.Parse(payment.LopHoc.ChuongTrinhHoc.GiaTien.ToString());
+
+        //            itemList.items.Add(new Item()
+        //            {
+        //                name = payment.LopHoc.ChuongTrinhHoc.TenChuongTrinh,
+        //                currency = "USD",
+        //                quantity = "1",
+        //                price = itemPrice.ToString("0.00"),
+        //                sku = "sku"
+        //            });
+        //        }
+        //    }
+
+        //    // Tạo thông tin thanh toán (amount)
+        //    var amount = new Amount()
+        //    {
+        //        currency = "USD",
+        //        total = TongTien().ToString("0.00"), // Thay bằng tổng tiền của itemList
+        //        details = new Details()
+        //        {
+        //            subtotal = TongTien().ToString("0.00"), // Thay bằng tổng tiền của itemList
+        //        }
+        //    };
+
+        //    // Tạo transaction và sử dụng thông tin itemList và amount đã tạo
+        //    var transactionList = new List<Transaction>();
+        //    transactionList.Add(new Transaction()
+        //    {
+        //        description = "Transaction description",
+        //        invoice_number = Convert.ToString((new Random()).Next(100000)),
+        //        amount = amount,
+        //        item_list = itemList
+        //    });
+
+        //    // Tạo payer và redirect_urls
+        //    var payer = new Payer()
+        //    {
+        //        payment_method = "paypal"
+        //    };
+
+        //    var redirUrls = new RedirectUrls()
+        //    {
+        //        cancel_url = redirectUrl + "&Cancel=true",
+        //        return_url = redirectUrl
+        //    };
+
+        //    // Tạo payment và sử dụng các thông tin đã tạo
+        //    this.payment = new Payment()
+        //    {
+        //        intent = "sale",
+        //        payer = payer,
+        //        transactions = transactionList,
+        //        redirect_urls = redirUrls
+        //    };
+
+        //    return this.payment.Create(apiContext);
+        //}
+
+
+        public ActionResult payError()
+        {
+            return View();
+        }
+
         #endregion
 
         #region Show Info

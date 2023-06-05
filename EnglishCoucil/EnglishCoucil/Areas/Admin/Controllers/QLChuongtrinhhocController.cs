@@ -65,7 +65,7 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             var giatien = collection["Giatien"];
             var mota = collection["Mota"];
 
-           if (string.IsNullOrEmpty(tenchuongtrinh))
+           if (string.IsNullOrEmpty(tenchuongtrinh) && tenchuongtrinh.Length > 20)
             {
                 ViewData["Loi2"] = "Vui lòng nhập tên chương trình";
             }
@@ -77,7 +77,7 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             {
                 ViewData["Loi4"] = "Vui lòng nhập thời lượng";
             }
-            else if (string.IsNullOrEmpty(giatien))
+            else if (string.IsNullOrEmpty(giatien) && giatien.Length > 20)
             {
                 ViewData["Loi5"] = "Vui lòng nhập giá tiền";
             }
@@ -162,13 +162,21 @@ namespace EnglishCoucil.Areas.Admin.Controllers
                 ChuongTrinhHoc chuongtrinh = data.ChuongTrinhHocs.SingleOrDefault(c => c.IDChuongTrinh == editchuongtrinh.IDChuongTrinh);
                 if (chuongtrinh != null)
                 {
-                    chuongtrinh.TenChuongTrinh = editchuongtrinh.TenChuongTrinh;
+                    if (editchuongtrinh.GiaTien < 20)
+                    {
+                        chuongtrinh.TenChuongTrinh = editchuongtrinh.TenChuongTrinh;
                     chuongtrinh.SoBuoiHoc = editchuongtrinh.SoBuoiHoc;
                     chuongtrinh.ThoiLuong = editchuongtrinh.ThoiLuong;
                     chuongtrinh.GiaTien = editchuongtrinh.GiaTien;
                     chuongtrinh.MoTa = editchuongtrinh.MoTa;
                     data.SubmitChanges();
                     return RedirectToAction("Chuongtrinhhoc");
+                    }
+                    else
+                    {
+                        ViewBag.SuccessMessage = "Nhập lại giá tiền";
+                        return View(editchuongtrinh);
+                    }
                 }
                 else
                 {

@@ -67,9 +67,12 @@
 
             </tr>
         </table>
-        <div>
-            @Html.ActionLink("Back", "Hocvien", new { id = Model.IDHocvien }) |
-            @Html.ActionLink("Sửa thông tin học viên", "Suahocvien", new { IDhv = @ViewBag.IDhv })
+        <div style="text-align:center">
+            <a href=" @Url.Action("Hocvien", "QLHocvien",new { id = Model.IDHocvien })" class="btn btn-sm btn-info">Back</a>
+          
+                <a href=" @Url.Action("Suahocvien", "QLHocvien",new { IDhv = @ViewBag.IDhv })" class="btn btn-sm btn-danger">Edit</a>
+            </div>
+        
         </div>
     </div>
-</div>
+

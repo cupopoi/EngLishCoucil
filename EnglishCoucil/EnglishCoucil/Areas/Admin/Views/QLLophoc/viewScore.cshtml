@@ -35,23 +35,61 @@
                 </tr>
                 <tr>
                     <td><strong>Điểm nghe:</strong></td>
-                    <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemNghe)</td>
+
+                    @if (Model.FirstOrDefault()?.DiemNghe != null)
+                    {
+                        <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemNghe)</td>
+                    }
+                    else
+                    {
+                        <td>0</td>
+                    }
+
                 </tr>
                 <tr>
                     <td><strong>Điểm nói:</strong></td>
-                    <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemNoi)</td>
+                    @if (Model.FirstOrDefault()?.DiemNoi != null)
+                    {
+                        <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemNoi)</td>
+                    }
+                    else
+                    {
+                        <td>0</td>
+                    }
                 </tr>
                 <tr>
                     <td><strong>Điểm đọc:</strong></td>
-                    <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemDoc)</td>
+                    @if (Model.FirstOrDefault()?.DiemDoc != null)
+                    {
+                        <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemDoc)</td>
+                    }
+                    else
+                    {
+                        <td>0</td>
+                    }
+                  
                 </tr>
                 <tr>
                     <td><strong>Điểm viết:</strong></td>
-                    <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemViet)</td>
+                    @if (Model.FirstOrDefault()?.DiemViet != null)
+                    {
+                        <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemViet)</td>
+                    }
+                    else
+                    {
+                        <td>0</td>
+                    }
                 </tr>
                 <tr>
                     <td><strong>Điểm trung bình:</strong></td>
-                    <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemTB)</td>
+                    @if (Model.FirstOrDefault()?.DiemTB != null)
+                    {
+                        <td>@Html.DisplayFor(model => model.FirstOrDefault().DiemTB)</td>
+                    }
+                    else
+                    {
+                        <td>0</td>
+                    }
                 </tr>
             </table>
 

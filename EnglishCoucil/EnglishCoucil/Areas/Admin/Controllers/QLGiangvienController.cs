@@ -114,9 +114,9 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             {
                 ViewData["Loi5"] = "Email không hợp lệ";
             }
-            else if (string.IsNullOrEmpty(luong))
+            else if (string.IsNullOrEmpty(luong) && luong.Length > 20)
             {
-                ViewData["Loi6"] = "Vui lòng nhập lương";
+                ViewData["Loi6"] = "Vui lòng nhập lại lương";
             }
             else
             {

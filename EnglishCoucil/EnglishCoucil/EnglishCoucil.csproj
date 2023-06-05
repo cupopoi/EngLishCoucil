@@ -45,7 +45,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accessibility" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
@@ -129,6 +133,7 @@
     <Compile Include="Areas\Admin\Controllers\QLHocvienController.cs" />
     <Compile Include="Areas\Admin\Controllers\QLLichhocController.cs" />
     <Compile Include="Areas\Admin\Controllers\QLLophocController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StatisticsController.cs" />
     <Compile Include="Areas\Admin\Data\dbQLtrungtam.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -141,6 +146,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountInfo.cs" />
+    <Compile Include="Models\PaypalConfiguration.cs" />
     <Compile Include="Models\ViewAllCouceClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -2339,6 +2345,7 @@
     <None Include="Areas\Admin\Data\dbQLtrungtam.dbml.layout">
       <DependentUpon>dbQLtrungtam.dbml</DependentUpon>
     </None>
+    <Content Include="Areas\Admin\Views\Statistics\StaticView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -2374,6 +2381,8 @@
     <Content Include="Views\User\AllCource.cshtml" />
     <Content Include="Views\User\EditInfo.cshtml" />
     <Content Include="Views\User\showInfo.cshtml" />
+    <Content Include="Views\User\paySuccess.cshtml" />
+    <Content Include="Views\User\payError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

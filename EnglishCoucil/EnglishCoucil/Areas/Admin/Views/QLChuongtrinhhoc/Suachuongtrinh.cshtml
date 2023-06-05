@@ -22,6 +22,25 @@
         </div>
     </div><!-- /.container-fluid -->
 </section>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    ViewBag.SuccessMessage = TempData["SuccessMessage"].ToString();
+    TempData.Remove("SuccessMessage");
+}
+
+<p style="text-align:center;">
+    @Html.ActionLink("Thêm ca học", "Themcahoc", "QLlichhoc")
+</p>
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.SuccessMessage</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    ViewBag.SuccessMessage = TempData["SuccessMessage"].ToString();
+    TempData.Remove("SuccessMessage");
+}
 <div class="content">
     <div class="container-fluid">
         @using (Html.BeginForm())
