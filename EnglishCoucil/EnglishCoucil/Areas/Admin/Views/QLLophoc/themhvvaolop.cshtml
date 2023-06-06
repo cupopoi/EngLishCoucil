@@ -28,7 +28,7 @@
     TempData.Remove("SuccessMessage");
 }
 <p style="text-align:center;">
-    @Html.ActionLink("Xem danh sách ", "Xemhvtronglop", new { IDlh = @ViewBag.Idlh })
+    <a href=" @Url.Action("Xemhvtronglop", "QLLophoc", new { IDlh = @ViewBag.Idlh })" class="btn btn-outline-warning">Xem danh sách</a>
 </p>
 @if (ViewBag.SuccessMessage != null)
 {
@@ -63,7 +63,7 @@
                 <th>
                     Email:
                 </th>
-             
+
                 <th>
                     Trạng thái
                 </th>
@@ -98,13 +98,13 @@
                         @Html.DisplayFor(modelItem => item.TrangThaiHV.TenTrangThai)
                     </td>
                     <td>
-                        @Html.ActionLink("AddToClass", "addtoclass", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocvien })
+                        <a href=" @Url.Action("addtoclass", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocvien })" class="btn btn-outline-secondary btn-sm">AddToClass</a>
                     </td>
                 </tr>
             }
         </table>
         <div style="text-align:center">
-            @Html.ActionLink("Back", "Lophoc")
+            <a href=" @Url.Action("Lophoc", "QLLophoc")" class="btn btn-success">Back</a>
         </div>
     </div>
 </div>

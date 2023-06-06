@@ -10,6 +10,8 @@
         <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
             <div class="input-group-append">
                 @ViewBag.Success
+                    @ViewBag.alert
+              
                 @if (Session["User"] != null)
                 {
                     <a href="@Url.Action("AllCource", "User", new { IDtk = Session["IDtk"] }, Request.Url.Scheme)" class="btn btn-secondary btn-lg px-4 px-lg-5 mx-auto">JOIN</a>

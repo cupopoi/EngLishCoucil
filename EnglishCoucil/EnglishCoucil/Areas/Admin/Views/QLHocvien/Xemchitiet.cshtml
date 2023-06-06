@@ -62,15 +62,11 @@
                 <td><b>Trạng thái học:</b></td>
                 <td>@Html.DisplayFor(model => model.TrangThaiHV.TenTrangThai)</td>
             </tr>
-            <tr>
-                <td><b>Lịch học:</b></td>
-
-            </tr>
         </table>
         <div style="text-align:center">
-            <a href=" @Url.Action("Hocvien", "QLHocvien",new { id = Model.IDHocvien })" class="btn btn-sm btn-info">Back</a>
+            <a href=" @Url.Action("Hocvien", "QLHocvien",new { id = Model.IDHocvien })" class="btn btn-info">Back</a>
           
-                <a href=" @Url.Action("Suahocvien", "QLHocvien",new { IDhv = @ViewBag.IDhv })" class="btn btn-sm btn-danger">Edit</a>
+                <a href=" @Url.Action("Suahocvien", "QLHocvien",new { IDhv = @ViewBag.IDhv })" class="btn btn-danger">Edit</a>
             </div>
         
         </div>

@@ -94,12 +94,18 @@
 
                     </td>
                     <td>
-                        @Html.ActionLink("Add Student", "themhvvaolop", new { IDlh = item.IDLophoc })|
-                        @Html.ActionLink("View Class", "Xemhvtronglop", new { IDlh = item.IDLophoc }) |
-                        @Html.ActionLink("Delete", "Xoalophoc", new { IDlh = item.IDLophoc }, new { onclick = "return confirm('Bạn có chắc chắn muốn xóa?');" })
+                        <a href=" @Url.Action("themhvvaolop", "QLLophoc", new { IDlh = item.IDLophoc })" class="btn btn-outline-secondary btn-sm">Add Student</a>
+                        <a href=" @Url.Action("Xemhvtronglop", "QLLophoc", new { IDlh = item.IDLophoc })" class="btn btn-outline-secondary btn-sm">View Class</a>
+                        <a href="@Url.Action("Xoalophoc", "QLLophoc", new { IDlh = item.IDLophoc }))" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                            <button class="btn btn-outline-danger btn-sm">Del</button>
+                        </a>
                     </td>
                 </tr>
             }
         </table>
+
+        <div style="text-align:center">
+            <a href=" @Url.Action("Lophoc", "QLLophoc")" class="btn btn-success">Back</a>
+        </div>
     </div>
 </div>

@@ -103,15 +103,15 @@
 
 
             <td>
-                <a href=" @Url.Action("addScore", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien, IDaction = 1 })" class="btn btn-sm btn-info">Add Score</a>
-                <a href=" @Url.Action("viewScore", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien })" class="btn btn-sm btn-info">View Score</a>
-                <a href=" @Url.Action("DeleteStudent", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien })" class="btn btn-sm btn-danger">Delete Student</a>
+                <a href=" @Url.Action("addScore", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien, IDaction = 1 })" class="btn btn-outline-secondary btn-sm">Add Score</a>
+                <a href=" @Url.Action("viewScore", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien })" class="btn btn-outline-secondary btn-sm">View Score</a>
+                <a href=" @Url.Action("DeleteStudent", "QLLophoc", new { IDlh = @ViewBag.Idlh, IDhv = item.IDHocVien })" class="btn btn-sm btn-outline-danger">Del</a>
             </td>
         </tr>
     }
 </table>
 <div style="text-align:center">
+    <a href=" @Url.Action("themhvvaolop", "QLLophoc", new { IDlh = @ViewBag.Idlh })" class="btn btn-outline-info">Back to list student null class</a>
+    <a href=" @Url.Action("Lophoc", "QLLophoc")" class="btn btn-outline-primary">Back to list class</a>
 
-    @Html.ActionLink("Back to list student null class", "themhvvaolop", new { IDlh = @ViewBag.Idlh })|
-    @Html.ActionLink("Back to list class", "Lophoc")
 </div>

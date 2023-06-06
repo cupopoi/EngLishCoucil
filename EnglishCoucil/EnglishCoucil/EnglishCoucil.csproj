@@ -2383,6 +2383,9 @@
     <Content Include="Views\User\showInfo.cshtml" />
     <Content Include="Views\User\paySuccess.cshtml" />
     <Content Include="Views\User\payError.cshtml" />
+    <Content Include="Views\User\changePassword.cshtml" />
+    <Content Include="Views\User\forgetPassword.cshtml" />
+    <Content Include="Views\User\changePasswordCheck.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

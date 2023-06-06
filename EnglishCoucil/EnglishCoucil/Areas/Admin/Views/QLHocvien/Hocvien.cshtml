@@ -28,7 +28,7 @@
 }
 
 <p style="text-align:center;">
-    @Html.ActionLink("Thêm học viên", "Themhocvien", "QLHocvien")
+    <a href=" @Url.Action("Themhocvien", "QLHocvien")" class="btn btn-outline-warning">Thêm học viên</a>
 </p>
 @if (ViewBag.SuccessMessage != null)
 {
@@ -72,11 +72,11 @@
                     <td>@Html.DisplayFor(modelItem => item.Email)</td>
                     <td>@Html.DisplayFor(modelItem => item.TrangThaiHV.TenTrangThai)</td>
                     <td>
-                        <a href=" @Url.Action("Suahocvien", "QLHocvien", new { IDhv = item.IDHocvien })" class="btn btn-sm btn-info">Edit</a> 
-                        <a href=" @Url.Action("Xemchitiet", "QLHocvien", new { IDhv = item.IDHocvien })" class="btn btn-sm btn-dark">Details</a>
-                        <a href=" @Url.Action("StudentTimetable", "QLHocvien", new { IDhv = item.IDHocvien })" class="btn btn-sm btn-dark">TimeTable</a>
+                        <a href=" @Url.Action("Suahocvien", "QLHocvien", new { IDhv = item.IDHocvien })" class="btn btn-outline-primary btn-sm">Edit</a> 
+                        <a href=" @Url.Action("Xemchitiet", "QLHocvien", new { IDhv = item.IDHocvien })" class="btn btn-outline-info btn-sm">Details</a>
+                        <a href=" @Url.Action("StudentTimetable", "QLHocvien", new { IDhv = item.IDHocvien })" class="btn btn-outline-secondary btn-sm">TimeTable</a>
                         <a href="@Url.Action("Xoahocvien", "QLHocvien", new { IDhv = item.IDHocvien })" onclick="return confirm('Khi xóa sẽ mất hết dữ liệu học viên đã học, bạn có chắc chắn muốn xóa học viên này?');">
-                            <i class="btn btn-sm btn-danger">Del</i>
+                            <button class="btn btn-outline-danger btn-sm">Del</button>
                         </a>
 
                     </td>

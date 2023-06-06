@@ -51,8 +51,10 @@
 
         </table>
         <p>
-            @Html.ActionLink("Edit", "Suachuongtrinh", new { IDct = Model.IDChuongTrinh }) |
-            @Html.ActionLink("Back", "Chuongtrinhhoc")
+            <div style="text-align:center">
+                <a href=" @Url.Action("Chuongtrinhhoc", "QLchuongtrinhhoc")" class="btn btn-info">Back</a>
+                <a href=" @Url.Action("Suachuongtrinh", "QLchuongtrinhhoc", new { IDct = Model.IDChuongTrinh })" class="btn btn-danger">Edit</a>
+            </div>
         </p>
     </div>
 </div>

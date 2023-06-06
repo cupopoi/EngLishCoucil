@@ -46,12 +46,16 @@
                 <p>Thời gian bắt đầu: @ViewBag.TGBatdau</p>
                 <p>Thời gian kết thúc: @ViewBag.TGKetthuc</p>
                 <div>
-                    @Html.ActionLink("Choose", "Cahoc", "QLLichhoc", new { IDlh = Model.IDLophoc, IDaction = 1 }, null)
+                    <div>
+                        <a href=" @Url.Action("Cahoc", "QLLichhoc", new { IDlh = Model.IDLophoc, IDaction = 1 }, null)" class="btn btn-outline-danger btn-sm">Choose</a>
+                    </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Thêm</button>
+            <button type="submit" class="btn btn-outline-success">Thêm</button>
         }
-
+        <div style="text-align:center">
+            <a href=" @Url.Action("Lophoc", "QLLophoc")" class="btn btn-success">Back</a>
+        </div>
     </div>
 </div>

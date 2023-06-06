@@ -43,7 +43,7 @@
                     <b>Hình ảnh:</b>
                     <img id="pictureUpload" src="@Model.Hinh" alt="Hình ảnh" width="100" height="100" />
                     <input type="file" name="fileUpload" id="fileUpload" accept="image/*" style="display:none;" />
-                    <input type="button" id="btnUpload" value="Chọn" class="btn btn-success" />
+                    <input type="button" id="btnUpload" value="Chọn" class="btn btn-success btn-sm" />
                     @Html.HiddenFor(model => model.Hinh)
 
                 </div>
@@ -51,7 +51,7 @@
                     <b>Hình bằng cấp:</b>
                     <img id="pictureUpload1" src="@Model.BangCap" alt="Hình ảnh" width="100" height="100" />
                     <input type="file" name="fileUpload1" id="fileUpload1" accept="image/*" style="display:none;" />
-                    <input type="button" id="btnUpload1" value="Chọn" class="btn btn-success" />
+                    <input type="button" id="btnUpload1" value="Chọn" class="btn btn-success btn-sm" />
                     @Html.HiddenFor(model => model.BangCap)
 
                 </div>
@@ -92,13 +92,13 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-default" />
+                        <input type="submit" value="Save" class="btn btn-outline-success" />
                     </div>
                 </div>
             </div>
         }
         <div style="text-align:center">
-            <a href=" @Url.Action("Giangvien", "QLGiangvien")" class="btn btn-sm btn-info">Back</a>
+            <a href=" @Url.Action("Giangvien", "QLGiangvien")" class="btn btn-success">Back</a>
         </div>
     </div>
 </div>

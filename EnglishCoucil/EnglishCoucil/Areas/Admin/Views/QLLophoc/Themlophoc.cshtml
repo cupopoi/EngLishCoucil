@@ -32,7 +32,7 @@
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                   <b>Tên lớp học:</b>
+                    <b>Tên lớp học:</b>
                     <div class="col-sm-12">
                         <input type="text" class="form-control form-control-user"
                                placeholder="Nhập tên lớp học" name="Tenlophoc">
@@ -45,28 +45,30 @@
                         <p>ID giảng viên: @ViewBag.idgv</p>
                         <p>Giảng viên: @ViewBag.namegv</p>
                         <div>
-                            @Html.ActionLink("Thêm GV vào", "Themgvvaolop", new { idaction = 1 })
+                            <a href=" @Url.Action("Themgvvaolop", "QLLophoc", new { idaction = 1 })" class="btn btn-outline-danger">Add Teacher</a>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                   <b>Chương trình học:</b>
+                    <b>Chương trình học:</b>
                     <div class="col-md-10">
                         <p>ID chương trình:@ViewBag.idct</p>
                         <p>Chương trình: @ViewBag.namect</p>
-                        @Html.ActionLink("Thêm CT vào", "Themctvaolop", new { Idremen = @ViewBag.idgv }, null)
+                        <div>
+                            <a href=" @Url.Action("Themctvaolop", "QLLophoc", new { Idremen = @ViewBag.idgv }, null)" class="btn btn-outline-danger">Add Cource</a>
+                        </div>
+
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-default" />
+                        <input type="submit" value="Create" class="btn btn-outline-success" />
                     </div>
                 </div>
             </div>
         }
-
-        <div>
-            @Html.ActionLink("Back to List", "Lophoc")
+        <div style="text-align:center">
+            <a href=" @Url.Action("Lophoc", "QLLophoc")" class="btn btn-success">Back</a>
         </div>
     </div>
 </div>

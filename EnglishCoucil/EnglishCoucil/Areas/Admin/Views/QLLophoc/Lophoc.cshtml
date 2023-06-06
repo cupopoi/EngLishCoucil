@@ -33,7 +33,7 @@
     TempData.Remove("SuccessMessage");
 }
 <p style="text-align:center;">
-    @Html.ActionLink("Thêm lớp học", "Themlophoc", "QLLophoc")
+    <a href=" @Url.Action("Themlophoc", "QLLophoc")" class="btn btn-outline-warning">Thêm lớp học</a>
 </p>
 @if (ViewBag.SuccessMessage != null)
 {
@@ -98,13 +98,14 @@
                     </td>
 
                     <td>
-
-                        @Html.ActionLink("Add Student", "themhvvaolop", new { IDlh = item.IDLophoc })|
-                        @Html.ActionLink("Add Study Shift", "ThemlophocvaoCaHoc", new { IDlh = item.IDLophoc })|
-                        @Html.ActionLink("View Class", "Xemhvtronglop", new { IDlh = item.IDLophoc }) |
-                        @Html.ActionLink("Edit", "Sualophoc", new { IDlh = item.IDLophoc }) |
-                        @Html.ActionLink("View All", "ShiftinClass", new { IDlh = item.IDLophoc })|
-                        @Html.ActionLink("Delete", "Xoalophoc", new { IDlh = item.IDLophoc }, new { onclick = "return confirm('Bạn có chắc chắn muốn xóa?');" })
+                        <a href=" @Url.Action("themhvvaolop", "QLLophoc", new { IDlh = item.IDLophoc })" class="btn btn-outline-secondary btn-sm">Add Student</a>
+                        <a href=" @Url.Action("ThemlophocvaoCaHoc", "QLLophoc", new { IDlh = item.IDLophoc })" class="btn btn-outline-secondary btn-sm">Add Shift</a>
+                        <a href=" @Url.Action("Xemhvtronglop", "QLLophoc", new { IDlh = item.IDLophoc })" class="btn btn-outline-secondary btn-sm">View Class</a>
+                        <a href=" @Url.Action("ShiftinClass", "QLLophoc", new { IDlh = item.IDLophoc })" class="btn btn-outline-secondary btn-sm">View All</a>
+                        <a href=" @Url.Action("Sualophoc", "QLLophoc", new { IDlh = item.IDLophoc })" class="btn btn-outline-primary btn-sm">Edit</a>
+                        <a href="@Url.Action("Xoalophoc", "QLLophoc", new { IDlh = item.IDLophoc }))" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                            <button class="btn btn-outline-danger btn-sm">Del</button>
+                        </a>
                     </td>
 
                 </tr>

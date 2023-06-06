@@ -27,7 +27,7 @@
     TempData.Remove("SuccessMessage");
 }
 <p style="text-align:center;">
-    @Html.ActionLink("Thêm chương trình", "Themchuongtrinh", "QLchuongtrinhhoc")
+    <a href=" @Url.Action("Themchuongtrinh", "QLchuongtrinhhoc")" class="btn btn-outline-warning">Thêm chương trình</a>
 </p>
 @if (ViewBag.SuccessMessage != null)
 {
@@ -95,9 +95,12 @@
                         @Html.DisplayFor(modelItem => item.MoTa)
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Suachuongtrinh", new { IDct = item.IDChuongTrinh }) |
-                        @Html.ActionLink("Details", "Xemchitiet", new { IDct = item.IDChuongTrinh }) |
-                        @Html.ActionLink("Delete", "Xoachuongtrinh", new { IDct = item.IDChuongTrinh })|
+
+                        <a href=" @Url.Action("Suachuongtrinh", "QLchuongtrinhhoc", new { IDct = item.IDChuongTrinh })" class="btn btn-outline-primary btn-sm">Edit</a>
+                        <a href=" @Url.Action("Xemchitiet", "QLchuongtrinhhoc", new { IDct = item.IDChuongTrinh })" class="btn btn-outline-info btn-sm">Detail</a>
+                        <a href="@Url.Action("Xoachuongtrinh", "QLchuongtrinhhoc", new { IDct = item.IDChuongTrinh }))" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                            <button class="btn btn-outline-danger btn-sm">Del</button>
+                        </a>
                         @{
                             bool isValid = true;
                             if (item.IDChuongTrinh == 0 || ViewBag.idaction == 0)
@@ -108,7 +111,8 @@
 
                         @if (isValid && ViewBag.idaction == 1)
                         {
-                            @Html.ActionLink("AddToClass", "Themlophocdacoct", "QLLophoc", new { IDct = item.IDChuongTrinh, Idremen = ViewBag.idgv }, null)
+                            <a href=" @Url.Action("Themlophocdacoct", "QLLophoc",new { IDct = item.IDChuongTrinh, Idremen = ViewBag.idgv }, null)" class="btn btn-outline-secondary btn-sm">AddToClass</a>
+
                         }
                         else
                         {
@@ -116,7 +120,8 @@
                         }
                         @if (isValid && ViewBag.idaction == 2)
                         {
-                            @Html.ActionLink("AddToClass", "Sualophoccoct", "QLLophoc", new { IDct = item.IDChuongTrinh, Idremen = ViewBag.idgv, IDlh = ViewBag.idlh }, null)
+                            <a href=" @Url.Action("Sualophoccoct", "QLLophoc", new { IDct = item.IDChuongTrinh, Idremen = ViewBag.idgv, IDlh = ViewBag.idlh }, null)" class="btn btn-outline-secondary btn-sm">AddToClass</a>
+                           
                         }
                         else
                         {

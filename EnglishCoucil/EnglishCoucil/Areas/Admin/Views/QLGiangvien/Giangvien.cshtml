@@ -28,7 +28,7 @@
     TempData.Remove("SuccessMessage");
 }
 <p style="text-align:center">
-    @Html.ActionLink("Thêm giảng viên", "Themgiangvien", "QLGiangvien")
+    <a href=" @Url.Action("Themgiangvien", "QLGiangvien")" class="btn btn-outline-warning">Thêm giảng viên</a>
 </p>
 @if (ViewBag.SuccessMessage != null)
 {
@@ -86,10 +86,10 @@
                         @Html.DisplayFor(modelItem => item.Luong)
                     </td>
                     <td>
-                        <a href=" @Url.Action("Suagiangvien", "QLGiangvien", new { IDgv = item.IDGiangvien })" class="btn btn-sm btn-info">Edit</a>
-                        <a href=" @Url.Action("Xemchitiet", "QLGiangvien", new { IDgv = item.IDGiangvien })" class="btn btn-sm btn-dark">Detail</a>
+                        <a href=" @Url.Action("Suagiangvien", "QLGiangvien", new { IDgv = item.IDGiangvien })" class="btn btn-outline-primary btn-sm">Edit</a>
+                        <a href=" @Url.Action("Xemchitiet", "QLGiangvien", new { IDgv = item.IDGiangvien })" class="btn btn-outline-info btn-sm">Detail</a>
                         <a href="@Url.Action("Xoagiangvien", "QLGiangvien", new { IDgv = item.IDGiangvien })" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
-                            <i class="btn btn-sm btn-danger">Del</i>
+                            <button class="btn btn-outline-danger btn-sm">Del</button>
                         </a>
                         @{
                             bool isValid = true;
@@ -101,7 +101,7 @@
 
                         @if (isValid && ViewBag.idaction == 1)
                         {
-                            <a href=" @Url.Action("Themlophocdacogv", "QLLophoc", new { IDgv = item.IDGiangvien })" class="btn btn-sm btn-info">AddToClass</a>
+                            <a href=" @Url.Action("Themlophocdacogv", "QLLophoc", new { IDgv = item.IDGiangvien })" class="btn btn-outline-secondary btn-sm">AddToClass</a>
                         }
                         else
                         {
@@ -109,7 +109,7 @@
                         }
                         @if (isValid && ViewBag.idaction == 2)
                         {
-                            <a href=" @Url.Action("Sualophoccogv", "QLLophoc", new { IDgv = item.IDGiangvien, IDlh = ViewBag.idlh  })" class="btn btn-sm btn-info">AddToClass</a>
+                            <a href=" @Url.Action("Sualophoccogv", "QLLophoc", new { IDgv = item.IDGiangvien, IDlh = ViewBag.idlh  })" class="btn btn-outline-secondary btn-sm">AddToClass</a>
                            
                         }
                         else

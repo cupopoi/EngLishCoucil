@@ -28,7 +28,7 @@
 }
 
 <p style="text-align:center;">
-    @Html.ActionLink("Thêm ca học", "Themcahoc", "QLlichhoc")
+    <a href=" @Url.Action("Themcahoc", "QLlichhoc")" class="btn btn-outline-warning">Thêm ca học</a>
 </p>
 @if (ViewBag.SuccessMessage != null)
 {
@@ -72,14 +72,18 @@
 
                             @if (isValid && ViewBag.IDaction == 1)
                             {
-                                @Html.ActionLink("AddToClass", "ThemlophocvaoCaHoc", "QLLophoc", new { IDlh = ViewBag.IDlh, IDCaHoc = item.IDLichhoc }, null)
-                                <span>|</span> @Html.ActionLink("Delete", "Xoacahoc", new { IDch = item.IDLichhoc }, new { onclick = "return confirm('Bạn có chắc chắn muốn xóa?');" })
+                                <a href=" @Url.Action("ThemlophocvaoCaHoc", "QLLophoc", new { IDlh = ViewBag.IDlh, IDCaHoc = item.IDLichhoc })" class="btn btn-outline-primary btn-sm">AddToClass</a>
+
+                                <a href="@Url.Action("Xoacahoc", "QLlichhoc", new { IDch = item.IDLichhoc }))" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                    <button class="btn btn-outline-danger btn-sm">Del</button>
+                                </a>
                             }
                             else
                             {
-                                @Html.ActionLink("AddClass", "Lophoc", "QLLophoc", null, Request.Url.Scheme)
-                                <span>|</span> @Html.ActionLink("Delete", "Xoacahoc", new { IDch = item.IDLichhoc }, new { onclick = "return confirm('Bạn có chắc chắn muốn xóa?');" })
-                                <div></div>
+                                 <a href=" @Url.Action("Lophoc", "QLLophoc", null, Request.Url.Scheme)" class="btn btn-outline-primary btn-sm">AddClass</a>
+                                <a href="@Url.Action("Xoacahoc", "QLlichhoc", new { IDch = item.IDLichhoc }))" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                    <button class="btn btn-outline-danger btn-sm">Del</button>
+                                </a>
                             }
 
                         </td>

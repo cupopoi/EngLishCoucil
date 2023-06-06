@@ -67,7 +67,7 @@
                     {
                         <td>0</td>
                     }
-                  
+
                 </tr>
                 <tr>
                     <td><strong>Điểm viết:</strong></td>
@@ -92,13 +92,12 @@
                     }
                 </tr>
             </table>
-
             <p>
-                @Html.ActionLink("Sửa điểm", "addScore", new { IDlh = @ViewBag.IDlh, IDhv = @ViewBag.IDhv, IDaction = 2 })
+                <a href=" @Url.Action("addScore", "QLLophoc", new { IDlh = @ViewBag.IDlh, IDhv = @ViewBag.IDhv, IDaction = 2})" class="btn btn-outline-warning">Sửa điểm</a>
             </p>
 
-            <div>
-                @Html.ActionLink("Back to List", "Xemhvtronglop", new { IDlh = @ViewBag.IDlh })
+            <div style="text-align:center">
+                <a href=" @Url.Action("Xemhvtronglop", "QLLophoc", new { IDlh = @ViewBag.IDlh})" class="btn btn-success">Back</a>
             </div>
         </div>
     </div>
