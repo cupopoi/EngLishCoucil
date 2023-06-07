@@ -62,16 +62,9 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             return true;
         }
 
-        private bool CheckId(int id)
-        {
-         return data.HocViens.Count(x => x.IDHocvien == id) > 0;
-             
-        }
-
-
         private bool checkemail(string email)
         {
-            return data.GiangViens.Any(x => x.Email == email);
+            return data.HocViens.Any(x => x.Email == email);
         }
 
 

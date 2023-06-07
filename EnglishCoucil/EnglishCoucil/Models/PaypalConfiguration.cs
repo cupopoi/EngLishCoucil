@@ -8,32 +8,31 @@ namespace EnglishCoucil.Models
 {
     public class PaypalConfiguration
     {
-        //Variables for storing the clientID and clientSecret key  
-        public readonly static string ClientId;
-        public readonly static string ClientSecret;
-        //Constructor  
+        public readonly static string clientId;
+        public readonly static string clientSecret;
+
         static PaypalConfiguration()
         {
-            var config = GetConfig();
-            ClientId = config["clientId"];
-            ClientSecret = config["clientSecret"];
+            var config = getConfig();
+            clientId = "Af83ROYg7SAM0-41ekPx3WHcvIsH8U5PJTfk3avkOzJKjXh14TCHTGfox5-WyMDMvOf9vs3wsDNR0wZY";
+            clientSecret = "EDWLm3hMsshhQ0Zo1e7bNar35GMmIL9SE4uI12r2RrVroR_fETQLSY8cF8BlGQqZUWcbmnvZgtZsOBdu";
         }
-        // getting properties from the web.config  
-        public static Dictionary<string, string> GetConfig()
+
+        private static Dictionary<string, string> getConfig()
         {
             return PayPal.Api.ConfigManager.Instance.GetProperties();
         }
-        private static string GetAccessToken()
+
+        private static string getAccessToken()
         {
-            // getting accesstocken from paypal  
-            string accessToken = new OAuthTokenCredential(ClientId, ClientSecret, GetConfig()).GetAccessToken();
+            string accessToken = new OAuthTokenCredential(clientId, clientSecret, getConfig()).GetAccessToken();
             return accessToken;
         }
-        public static APIContext GetAPIContext()
+
+        public static APIContext getAPIContext()
         {
-            // return apicontext object by invoking it with the accesstoken  
-            APIContext apiContext = new APIContext(GetAccessToken());
-            apiContext.Config = GetConfig();
+            APIContext apiContext = new APIContext(getAccessToken());
+            apiContext.Config = getConfig();
             return apiContext;
         }
     }

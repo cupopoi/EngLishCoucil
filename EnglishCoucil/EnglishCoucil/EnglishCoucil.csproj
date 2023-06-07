@@ -2337,6 +2337,7 @@
     <Content Include="ScriptsUser\lib\owlcarousel\LICENSE" />
     <Content Include="ScriptsUser\lib\waypoints\links.php" />
     <Content Include="Areas\Admin\Views\Account\UserAccount.cshtml" />
+    <Content Include="Areas\Admin\Views\Statistics\StaticView.cshtml" />
     <Content Include="Areas\Admin\Data\dbQLtrungtam.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>dbQLtrungtam.designer.cs</LastGenOutput>
@@ -2345,7 +2346,6 @@
     <None Include="Areas\Admin\Data\dbQLtrungtam.dbml.layout">
       <DependentUpon>dbQLtrungtam.dbml</DependentUpon>
     </None>
-    <Content Include="Areas\Admin\Views\Statistics\StaticView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

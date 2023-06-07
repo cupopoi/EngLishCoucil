@@ -36,7 +36,7 @@ VALUES (7, N'Chủ Nhật');
 --------------------------------------------------------
 ------------THÊM GIẢNG VIÊN----------------
 INSERT INTO [GiangVien]
-VALUES ( N'Kiên',N'Châu thành','0976391970',N'kt78139@gmail.com',null,null,100000,null);
+VALUES ( N'Kiên',N'Châu thành','0976391970',N'kt78139@gmail.com',null,null,100000);
 ---------------------------------------------
 ------------THÊM HỌC VIÊN----------------
 --UPDATE [HocVien] SET IDTaiKhoan = null WHERE IDTaiKhoan= 1  ;
@@ -57,15 +57,15 @@ VALUES ( N'07:00',N'09:00',1,30/05/2023);
 --------------------------------------
 ------------THÊM LỚP HỌC----------------
 INSERT INTO [LopHoc]
-VALUES ( N'Ielts 2.5',1,1,30);
+VALUES ( N'Ielts 1',1,1,30);
 INSERT INTO [LopHoc]
-VALUES ( N'Ielts 3.0',1,2,30);
+VALUES ( N'Ielts 2',1,2,30);
 ------------CHI TIẾT LỚP HỌC----------------
 INSERT INTO [ChiTietLopHoc]
-VALUES (1,1,6.5,6.5,5.0,7.5,1,null);
+VALUES (1,1,6.5,6.5,5.0,7.5,0,null);
 --UPDATE [ChiTietLopHoc] SET DaThanhToan = 0 WHERE IDLophoc = 2  ;
 INSERT INTO [ChiTietLopHoc]
-VALUES (2,1,null,null,null,null,null,null);
+VALUES (2,1,null,null,null,null,0,null);
 ----------------------------------
 ------------THÊM CHI TIẾT LỊCH HỌC----------------
 INSERT INTO [ChiTietLichHoc]

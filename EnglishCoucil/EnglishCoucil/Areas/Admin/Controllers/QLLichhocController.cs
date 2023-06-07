@@ -58,6 +58,18 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             {
                 ViewData["Loi2"] = "Nhập lại giờ";
             }
+            else if (tgBatDau > tgKetThuc)
+            {
+                ViewData["Loi2"] = "Giờ kết thúc phải sau giờ bắt đầu";
+            }
+            else if (!DateTime.TryParseExact(Request.Form["Ngay"], "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
+            {
+                ViewData["Loi3"] = "Ngày không hợp lệ";
+            }
+            else if (string.IsNullOrEmpty(Request.Form["Ngay"]))
+            {
+                ViewData["Loi3"] = "Vui lòng nhập ngày";
+            }
             else
             {
                 cahoc.TGBatDau = cahoc.TGBatDau;

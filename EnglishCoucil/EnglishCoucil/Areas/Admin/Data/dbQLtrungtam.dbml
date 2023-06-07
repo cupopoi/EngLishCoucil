@@ -6,6 +6,13 @@
       <Column Name="MatKhau" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="dbo.TrangThaiHV" Member="TrangThaiHVs">
+    <Type Name="TrangThaiHV">
+      <Column Name="IDTrangThai" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TenTrangThai" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="TrangThaiHV_HocVien" Member="HocViens" ThisKey="IDTrangThai" OtherKey="IDTrangThai" Type="HocVien" />
+    </Type>
+  </Table>
   <Table Name="dbo.CacNgayTrongTuan" Member="CacNgayTrongTuans">
     <Type Name="CacNgayTrongTuan">
       <Column Name="IDNgay" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -43,7 +50,7 @@
       <Column Name="SoBuoiHoc" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="ThoiLuong" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="GiaTien" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Column Name="MoTa" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MoTa" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Association Name="ChuongTrinhHoc_LopHoc" Member="LopHocs" ThisKey="IDChuongTrinh" OtherKey="IDChuongTrinh" Type="LopHoc" />
     </Type>
   </Table>
@@ -57,9 +64,7 @@
       <Column Name="Hinh" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="BangCap" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="Luong" Type="System.Double" DbType="Float" CanBeNull="true" />
-      <Column Name="IDTaiKhoan" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="GiangVien_LopHoc" Member="LopHocs" ThisKey="IDGiangvien" OtherKey="IDGiangVien" Type="LopHoc" />
-      <Association Name="TaiKhoan_GiangVien" Member="TaiKhoan" ThisKey="IDTaiKhoan" OtherKey="IDTaiKhoan" Type="TaiKhoan" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.HocVien" Member="HocViens">
@@ -67,17 +72,16 @@
       <Column Name="IDHocvien" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="TenHocVien" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="NgaySinh" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="DiaChi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DiaChi" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="SoDienThoai" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="Email" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="Hinh" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="IDTrangThai" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="CapDo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="IDTaiKhoan" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="NgayDangKy" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="HocVien_ChiTietLopHoc" Member="ChiTietLopHocs" ThisKey="IDHocvien" OtherKey="IDHocVien" Type="ChiTietLopHoc" />
-      <Association Name="TaiKhoan_HocVien" Member="TaiKhoan" ThisKey="IDTaiKhoan" OtherKey="IDTaiKhoan" Type="TaiKhoan" IsForeignKey="true" />
       <Association Name="TrangThaiHV_HocVien" Member="TrangThaiHV" ThisKey="IDTrangThai" OtherKey="IDTrangThai" Type="TrangThaiHV" IsForeignKey="true" />
+      <Association Name="TaiKhoan_HocVien" Member="TaiKhoan" ThisKey="IDTaiKhoan" OtherKey="IDTaiKhoan" Type="TaiKhoan" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.LichHoc" Member="LichHocs">
@@ -109,15 +113,7 @@
       <Column Name="IDTaiKhoan" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="TaiKhoan" Member="TaiKhoan1" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="MatKhau" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="TaiKhoan_GiangVien" Member="GiangViens" ThisKey="IDTaiKhoan" OtherKey="IDTaiKhoan" Type="GiangVien" />
       <Association Name="TaiKhoan_HocVien" Member="HocViens" ThisKey="IDTaiKhoan" OtherKey="IDTaiKhoan" Type="HocVien" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TrangThaiHV" Member="TrangThaiHVs">
-    <Type Name="TrangThaiHV">
-      <Column Name="IDTrangThai" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="TenTrangThai" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="TrangThaiHV_HocVien" Member="HocViens" ThisKey="IDTrangThai" OtherKey="IDTrangThai" Type="HocVien" />
     </Type>
   </Table>
 </Database>

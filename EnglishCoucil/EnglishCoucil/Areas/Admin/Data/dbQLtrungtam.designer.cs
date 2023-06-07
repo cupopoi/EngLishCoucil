@@ -33,6 +33,9 @@ namespace EnglishCoucil.Areas.Admin.Data
     partial void InsertAdmin(Admin instance);
     partial void UpdateAdmin(Admin instance);
     partial void DeleteAdmin(Admin instance);
+    partial void InsertTrangThaiHV(TrangThaiHV instance);
+    partial void UpdateTrangThaiHV(TrangThaiHV instance);
+    partial void DeleteTrangThaiHV(TrangThaiHV instance);
     partial void InsertCacNgayTrongTuan(CacNgayTrongTuan instance);
     partial void UpdateCacNgayTrongTuan(CacNgayTrongTuan instance);
     partial void DeleteCacNgayTrongTuan(CacNgayTrongTuan instance);
@@ -60,9 +63,6 @@ namespace EnglishCoucil.Areas.Admin.Data
     partial void InsertTaiKhoan(TaiKhoan instance);
     partial void UpdateTaiKhoan(TaiKhoan instance);
     partial void DeleteTaiKhoan(TaiKhoan instance);
-    partial void InsertTrangThaiHV(TrangThaiHV instance);
-    partial void UpdateTrangThaiHV(TrangThaiHV instance);
-    partial void DeleteTrangThaiHV(TrangThaiHV instance);
     #endregion
 		
 		public dbQLtrungtamDataContext(string connection) : 
@@ -76,18 +76,18 @@ namespace EnglishCoucil.Areas.Admin.Data
 		{
 			OnCreated();
 		}
-		
-		public dbQLtrungtamDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+        public dbQLtrungtamDataContext() :
+       base(global::System.Configuration.ConfigurationManager.ConnectionStrings["TrungTamTAConnectionString"].ConnectionString, mappingSource)
+        {
+            OnCreated();
+        }
+        public dbQLtrungtamDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
-        public dbQLtrungtamDataContext() :
-		base(global::System.Configuration.ConfigurationManager.ConnectionStrings["TrungTamTAConnectionString"].ConnectionString, mappingSource)
-        {
-            OnCreated();
-        }
-        public dbQLtrungtamDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		
+		public dbQLtrungtamDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -98,6 +98,14 @@ namespace EnglishCoucil.Areas.Admin.Data
 			get
 			{
 				return this.GetTable<Admin>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrangThaiHV> TrangThaiHVs
+		{
+			get
+			{
+				return this.GetTable<TrangThaiHV>();
 			}
 		}
 		
@@ -170,14 +178,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 			get
 			{
 				return this.GetTable<TaiKhoan>();
-			}
-		}
-		
-		public System.Data.Linq.Table<TrangThaiHV> TrangThaiHVs
-		{
-			get
-			{
-				return this.GetTable<TrangThaiHV>();
 			}
 		}
 	}
@@ -289,6 +289,120 @@ namespace EnglishCoucil.Areas.Admin.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrangThaiHV")]
+	public partial class TrangThaiHV : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IDTrangThai;
+		
+		private string _TenTrangThai;
+		
+		private EntitySet<HocVien> _HocViens;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDTrangThaiChanging(int value);
+    partial void OnIDTrangThaiChanged();
+    partial void OnTenTrangThaiChanging(string value);
+    partial void OnTenTrangThaiChanged();
+    #endregion
+		
+		public TrangThaiHV()
+		{
+			this._HocViens = new EntitySet<HocVien>(new Action<HocVien>(this.attach_HocViens), new Action<HocVien>(this.detach_HocViens));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDTrangThai", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int IDTrangThai
+		{
+			get
+			{
+				return this._IDTrangThai;
+			}
+			set
+			{
+				if ((this._IDTrangThai != value))
+				{
+					this.OnIDTrangThaiChanging(value);
+					this.SendPropertyChanging();
+					this._IDTrangThai = value;
+					this.SendPropertyChanged("IDTrangThai");
+					this.OnIDTrangThaiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenTrangThai", DbType="NVarChar(50)")]
+		public string TenTrangThai
+		{
+			get
+			{
+				return this._TenTrangThai;
+			}
+			set
+			{
+				if ((this._TenTrangThai != value))
+				{
+					this.OnTenTrangThaiChanging(value);
+					this.SendPropertyChanging();
+					this._TenTrangThai = value;
+					this.SendPropertyChanged("TenTrangThai");
+					this.OnTenTrangThaiChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrangThaiHV_HocVien", Storage="_HocViens", ThisKey="IDTrangThai", OtherKey="IDTrangThai")]
+		public EntitySet<HocVien> HocViens
+		{
+			get
+			{
+				return this._HocViens;
+			}
+			set
+			{
+				this._HocViens.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_HocViens(HocVien entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrangThaiHV = this;
+		}
+		
+		private void detach_HocViens(HocVien entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrangThaiHV = null;
 		}
 	}
 	
@@ -1054,7 +1168,7 @@ namespace EnglishCoucil.Areas.Admin.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(MAX)")]
 		public string MoTa
 		{
 			get
@@ -1142,11 +1256,7 @@ namespace EnglishCoucil.Areas.Admin.Data
 		
 		private System.Nullable<double> _Luong;
 		
-		private System.Nullable<int> _IDTaiKhoan;
-		
 		private EntitySet<LopHoc> _LopHocs;
-		
-		private EntityRef<TaiKhoan> _TaiKhoan;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1168,14 +1278,11 @@ namespace EnglishCoucil.Areas.Admin.Data
     partial void OnBangCapChanged();
     partial void OnLuongChanging(System.Nullable<double> value);
     partial void OnLuongChanged();
-    partial void OnIDTaiKhoanChanging(System.Nullable<int> value);
-    partial void OnIDTaiKhoanChanged();
     #endregion
 		
 		public GiangVien()
 		{
 			this._LopHocs = new EntitySet<LopHoc>(new Action<LopHoc>(this.attach_LopHocs), new Action<LopHoc>(this.detach_LopHocs));
-			this._TaiKhoan = default(EntityRef<TaiKhoan>);
 			OnCreated();
 		}
 		
@@ -1339,30 +1446,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDTaiKhoan", DbType="Int")]
-		public System.Nullable<int> IDTaiKhoan
-		{
-			get
-			{
-				return this._IDTaiKhoan;
-			}
-			set
-			{
-				if ((this._IDTaiKhoan != value))
-				{
-					if (this._TaiKhoan.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIDTaiKhoanChanging(value);
-					this.SendPropertyChanging();
-					this._IDTaiKhoan = value;
-					this.SendPropertyChanged("IDTaiKhoan");
-					this.OnIDTaiKhoanChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GiangVien_LopHoc", Storage="_LopHocs", ThisKey="IDGiangvien", OtherKey="IDGiangVien")]
 		public EntitySet<LopHoc> LopHocs
 		{
@@ -1373,40 +1456,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 			set
 			{
 				this._LopHocs.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaiKhoan_GiangVien", Storage="_TaiKhoan", ThisKey="IDTaiKhoan", OtherKey="IDTaiKhoan", IsForeignKey=true)]
-		public TaiKhoan TaiKhoan
-		{
-			get
-			{
-				return this._TaiKhoan.Entity;
-			}
-			set
-			{
-				TaiKhoan previousValue = this._TaiKhoan.Entity;
-				if (((previousValue != value) 
-							|| (this._TaiKhoan.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TaiKhoan.Entity = null;
-						previousValue.GiangViens.Remove(this);
-					}
-					this._TaiKhoan.Entity = value;
-					if ((value != null))
-					{
-						value.GiangViens.Add(this);
-						this._IDTaiKhoan = value.IDTaiKhoan;
-					}
-					else
-					{
-						this._IDTaiKhoan = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("TaiKhoan");
-				}
 			}
 		}
 		
@@ -1465,17 +1514,15 @@ namespace EnglishCoucil.Areas.Admin.Data
 		
 		private System.Nullable<int> _IDTrangThai;
 		
-		private string _CapDo;
-		
 		private System.Nullable<int> _IDTaiKhoan;
 		
 		private System.Nullable<System.DateTime> _NgayDangKy;
 		
 		private EntitySet<ChiTietLopHoc> _ChiTietLopHocs;
 		
-		private EntityRef<TaiKhoan> _TaiKhoan;
-		
 		private EntityRef<TrangThaiHV> _TrangThaiHV;
+		
+		private EntityRef<TaiKhoan> _TaiKhoan;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1497,8 +1544,6 @@ namespace EnglishCoucil.Areas.Admin.Data
     partial void OnHinhChanged();
     partial void OnIDTrangThaiChanging(System.Nullable<int> value);
     partial void OnIDTrangThaiChanged();
-    partial void OnCapDoChanging(string value);
-    partial void OnCapDoChanged();
     partial void OnIDTaiKhoanChanging(System.Nullable<int> value);
     partial void OnIDTaiKhoanChanged();
     partial void OnNgayDangKyChanging(System.Nullable<System.DateTime> value);
@@ -1508,8 +1553,8 @@ namespace EnglishCoucil.Areas.Admin.Data
 		public HocVien()
 		{
 			this._ChiTietLopHocs = new EntitySet<ChiTietLopHoc>(new Action<ChiTietLopHoc>(this.attach_ChiTietLopHocs), new Action<ChiTietLopHoc>(this.detach_ChiTietLopHocs));
-			this._TaiKhoan = default(EntityRef<TaiKhoan>);
 			this._TrangThaiHV = default(EntityRef<TrangThaiHV>);
+			this._TaiKhoan = default(EntityRef<TaiKhoan>);
 			OnCreated();
 		}
 		
@@ -1573,7 +1618,7 @@ namespace EnglishCoucil.Areas.Admin.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiaChi", DbType="NVarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DiaChi", DbType="NVarChar(100)")]
 		public string DiaChi
 		{
 			get
@@ -1677,26 +1722,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CapDo", DbType="NVarChar(50)")]
-		public string CapDo
-		{
-			get
-			{
-				return this._CapDo;
-			}
-			set
-			{
-				if ((this._CapDo != value))
-				{
-					this.OnCapDoChanging(value);
-					this.SendPropertyChanging();
-					this._CapDo = value;
-					this.SendPropertyChanged("CapDo");
-					this.OnCapDoChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDTaiKhoan", DbType="Int")]
 		public System.Nullable<int> IDTaiKhoan
 		{
@@ -1754,40 +1779,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaiKhoan_HocVien", Storage="_TaiKhoan", ThisKey="IDTaiKhoan", OtherKey="IDTaiKhoan", IsForeignKey=true)]
-		public TaiKhoan TaiKhoan
-		{
-			get
-			{
-				return this._TaiKhoan.Entity;
-			}
-			set
-			{
-				TaiKhoan previousValue = this._TaiKhoan.Entity;
-				if (((previousValue != value) 
-							|| (this._TaiKhoan.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TaiKhoan.Entity = null;
-						previousValue.HocViens.Remove(this);
-					}
-					this._TaiKhoan.Entity = value;
-					if ((value != null))
-					{
-						value.HocViens.Add(this);
-						this._IDTaiKhoan = value.IDTaiKhoan;
-					}
-					else
-					{
-						this._IDTaiKhoan = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("TaiKhoan");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrangThaiHV_HocVien", Storage="_TrangThaiHV", ThisKey="IDTrangThai", OtherKey="IDTrangThai", IsForeignKey=true)]
 		public TrangThaiHV TrangThaiHV
 		{
@@ -1818,6 +1809,40 @@ namespace EnglishCoucil.Areas.Admin.Data
 						this._IDTrangThai = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("TrangThaiHV");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaiKhoan_HocVien", Storage="_TaiKhoan", ThisKey="IDTaiKhoan", OtherKey="IDTaiKhoan", IsForeignKey=true)]
+		public TaiKhoan TaiKhoan
+		{
+			get
+			{
+				return this._TaiKhoan.Entity;
+			}
+			set
+			{
+				TaiKhoan previousValue = this._TaiKhoan.Entity;
+				if (((previousValue != value) 
+							|| (this._TaiKhoan.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TaiKhoan.Entity = null;
+						previousValue.HocViens.Remove(this);
+					}
+					this._TaiKhoan.Entity = value;
+					if ((value != null))
+					{
+						value.HocViens.Add(this);
+						this._IDTaiKhoan = value.IDTaiKhoan;
+					}
+					else
+					{
+						this._IDTaiKhoan = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("TaiKhoan");
 				}
 			}
 		}
@@ -2390,8 +2415,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 		
 		private string _MatKhau;
 		
-		private EntitySet<GiangVien> _GiangViens;
-		
 		private EntitySet<HocVien> _HocViens;
 		
     #region Extensibility Method Definitions
@@ -2408,7 +2431,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 		
 		public TaiKhoan()
 		{
-			this._GiangViens = new EntitySet<GiangVien>(new Action<GiangVien>(this.attach_GiangViens), new Action<GiangVien>(this.detach_GiangViens));
 			this._HocViens = new EntitySet<HocVien>(new Action<HocVien>(this.attach_HocViens), new Action<HocVien>(this.detach_HocViens));
 			OnCreated();
 		}
@@ -2473,19 +2495,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaiKhoan_GiangVien", Storage="_GiangViens", ThisKey="IDTaiKhoan", OtherKey="IDTaiKhoan")]
-		public EntitySet<GiangVien> GiangViens
-		{
-			get
-			{
-				return this._GiangViens;
-			}
-			set
-			{
-				this._GiangViens.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaiKhoan_HocVien", Storage="_HocViens", ThisKey="IDTaiKhoan", OtherKey="IDTaiKhoan")]
 		public EntitySet<HocVien> HocViens
 		{
@@ -2519,18 +2528,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 			}
 		}
 		
-		private void attach_GiangViens(GiangVien entity)
-		{
-			this.SendPropertyChanging();
-			entity.TaiKhoan = this;
-		}
-		
-		private void detach_GiangViens(GiangVien entity)
-		{
-			this.SendPropertyChanging();
-			entity.TaiKhoan = null;
-		}
-		
 		private void attach_HocViens(HocVien entity)
 		{
 			this.SendPropertyChanging();
@@ -2541,120 +2538,6 @@ namespace EnglishCoucil.Areas.Admin.Data
 		{
 			this.SendPropertyChanging();
 			entity.TaiKhoan = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrangThaiHV")]
-	public partial class TrangThaiHV : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _IDTrangThai;
-		
-		private string _TenTrangThai;
-		
-		private EntitySet<HocVien> _HocViens;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDTrangThaiChanging(int value);
-    partial void OnIDTrangThaiChanged();
-    partial void OnTenTrangThaiChanging(string value);
-    partial void OnTenTrangThaiChanged();
-    #endregion
-		
-		public TrangThaiHV()
-		{
-			this._HocViens = new EntitySet<HocVien>(new Action<HocVien>(this.attach_HocViens), new Action<HocVien>(this.detach_HocViens));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDTrangThai", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int IDTrangThai
-		{
-			get
-			{
-				return this._IDTrangThai;
-			}
-			set
-			{
-				if ((this._IDTrangThai != value))
-				{
-					this.OnIDTrangThaiChanging(value);
-					this.SendPropertyChanging();
-					this._IDTrangThai = value;
-					this.SendPropertyChanged("IDTrangThai");
-					this.OnIDTrangThaiChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenTrangThai", DbType="NVarChar(50)")]
-		public string TenTrangThai
-		{
-			get
-			{
-				return this._TenTrangThai;
-			}
-			set
-			{
-				if ((this._TenTrangThai != value))
-				{
-					this.OnTenTrangThaiChanging(value);
-					this.SendPropertyChanging();
-					this._TenTrangThai = value;
-					this.SendPropertyChanged("TenTrangThai");
-					this.OnTenTrangThaiChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrangThaiHV_HocVien", Storage="_HocViens", ThisKey="IDTrangThai", OtherKey="IDTrangThai")]
-		public EntitySet<HocVien> HocViens
-		{
-			get
-			{
-				return this._HocViens;
-			}
-			set
-			{
-				this._HocViens.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_HocViens(HocVien entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrangThaiHV = this;
-		}
-		
-		private void detach_HocViens(HocVien entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrangThaiHV = null;
 		}
 	}
 }

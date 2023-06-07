@@ -74,14 +74,14 @@
                             {
                                 <a href=" @Url.Action("ThemlophocvaoCaHoc", "QLLophoc", new { IDlh = ViewBag.IDlh, IDCaHoc = item.IDLichhoc })" class="btn btn-outline-primary btn-sm">AddToClass</a>
 
-                                <a href="@Url.Action("Xoacahoc", "QLlichhoc", new { IDch = item.IDLichhoc }))" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                <a href="@Url.Action("Xoacahoc", "QLlichhoc", new { IDch = item.IDLichhoc })" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
                                     <button class="btn btn-outline-danger btn-sm">Del</button>
                                 </a>
                             }
                             else
                             {
                                  <a href=" @Url.Action("Lophoc", "QLLophoc", null, Request.Url.Scheme)" class="btn btn-outline-primary btn-sm">AddClass</a>
-                                <a href="@Url.Action("Xoacahoc", "QLlichhoc", new { IDch = item.IDLichhoc }))" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                <a href="@Url.Action("Xoacahoc", "QLlichhoc", new { IDch = item.IDLichhoc })" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
                                     <button class="btn btn-outline-danger btn-sm">Del</button>
                                 </a>
                             }

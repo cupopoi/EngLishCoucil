@@ -98,7 +98,7 @@
 
                         <a href=" @Url.Action("Suachuongtrinh", "QLchuongtrinhhoc", new { IDct = item.IDChuongTrinh })" class="btn btn-outline-primary btn-sm">Edit</a>
                         <a href=" @Url.Action("Xemchitiet", "QLchuongtrinhhoc", new { IDct = item.IDChuongTrinh })" class="btn btn-outline-info btn-sm">Detail</a>
-                        <a href="@Url.Action("Xoachuongtrinh", "QLchuongtrinhhoc", new { IDct = item.IDChuongTrinh }))" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                        <a href="@Url.Action("Xoachuongtrinh", "QLchuongtrinhhoc", new { IDct = item.IDChuongTrinh })" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
                             <button class="btn btn-outline-danger btn-sm">Del</button>
                         </a>
                         @{
