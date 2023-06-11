@@ -76,7 +76,13 @@ VALUES (2,1);
 -----------------------CHỌN BẢNG-------------------------
 select * from [TrangThaiHV]
 select * from [CacNgayTrongTuan]
-
+SET DATEFORMAT dmy;
+UPDATE [HocVien] SET NgayDangKy = '13/06/2023' WHERE IDHocvien= 7  ;
+UPDATE [HocVien] SET NgayDangKy = '13/06/2023' WHERE IDHocvien= 2  ;
+UPDATE [HocVien] SET NgayDangKy = '13/06/2023' WHERE IDHocvien= 3  ;
+UPDATE [HocVien] SET NgayDangKy = '13/06/2023' WHERE IDHocvien= 4  ;
+UPDATE [HocVien] SET NgayDangKy = '06/11/2023' WHERE IDHocvien= 5  ;
+UPDATE [HocVien] SET NgayDangKy = '06/11/2023' WHERE IDHocvien= 6  ;
 	select * from [TaiKhoan]
 	select * from [HocVien]
 	select * from [GiangVien]
@@ -85,3 +91,19 @@ select * from [CacNgayTrongTuan]
 	select * from [LopHoc]
 	select * from [ChiTietLopHoc]
 	select * from [ChiTietLichHoc]
+
+	INSERT INTO [TaiKhoan]
+VALUES (N'viettrung',N'e10adc3949ba59abbe56e057f20f883e');
+	INSERT INTO [TaiKhoan]
+VALUES (N'khoithieu',N'e10adc3949ba59abbe56e057f20f883e');
+
+	INSERT INTO [TaiKhoan]
+VALUES (N'anhtuan',N'e10adc3949ba59abbe56e057f20f883e');
+
+	INSERT INTO [TaiKhoan]
+VALUES (N'luutuan',N'e10adc3949ba59abbe56e057f20f883e');
+
+	INSERT INTO [TaiKhoan]
+VALUES (N'manhcuong',N'e10adc3949ba59abbe56e057f20f883e');
+	INSERT INTO [TaiKhoan]
+VALUES (N'lamhung',N'e10adc3949ba59abbe56e057f20f883e');

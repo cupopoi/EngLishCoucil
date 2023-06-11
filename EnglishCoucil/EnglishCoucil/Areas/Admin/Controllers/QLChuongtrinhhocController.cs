@@ -162,7 +162,7 @@ namespace EnglishCoucil.Areas.Admin.Controllers
                 ChuongTrinhHoc chuongtrinh = data.ChuongTrinhHocs.SingleOrDefault(c => c.IDChuongTrinh == editchuongtrinh.IDChuongTrinh);
                 if (chuongtrinh != null)
                 {
-                    if (editchuongtrinh.GiaTien < 20)
+                    if (editchuongtrinh.GiaTien > 20)
                     {
                         chuongtrinh.TenChuongTrinh = editchuongtrinh.TenChuongTrinh;
                     chuongtrinh.SoBuoiHoc = editchuongtrinh.SoBuoiHoc;

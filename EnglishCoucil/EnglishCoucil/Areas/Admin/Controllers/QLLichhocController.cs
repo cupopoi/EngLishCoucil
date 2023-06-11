@@ -36,10 +36,10 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             var tgbatdau = collection["TGbatdau"];
             var tgketthuc = collection["TGketthuc"];
             var ngay = DateTime.ParseExact(collection["Ngay"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
-          
+
             TimeSpan tgBatDau;
             TimeSpan tgKetThuc;
-           
+
             bool isValidTGBatDau = TimeSpan.TryParse(tgbatdau, out tgBatDau);
             bool isValidTGKetThuc = TimeSpan.TryParse(tgketthuc, out tgKetThuc);
             //DayOfWeek là chuyển đổi thứ sang số từ 0-6 tương ứng chủ nhật - thứ 7
@@ -103,7 +103,46 @@ namespace EnglishCoucil.Areas.Admin.Controllers
             return RedirectToAction("Cahoc", "QLLichhoc");
         }
 
+        [HttpGet]
+        public ActionResult Suacahoc(int IDCaHoc)
+        {
 
+            LichHoc cahoc = data.LichHocs.SingleOrDefault(c => c.IDLichhoc == IDCaHoc);
+            if (cahoc == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                return View(cahoc);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Suacahoc(LichHoc editcahoc)
+        {
+            if (ModelState.IsValid)
+            {
+                LichHoc cahoc = data.LichHocs.SingleOrDefault(c => c.IDLichhoc == editcahoc.IDLichhoc);
+                if (cahoc != null)
+                {
+                    cahoc.TGBatDau = editcahoc.TGBatDau;
+                    cahoc.TGKetThuc = editcahoc.TGKetThuc;
+                    cahoc.Ngay = editcahoc.Ngay;
+                    data.SubmitChanges();
+                    return RedirectToAction("Cahoc");
+                }
+                else
+                {
+                    return View(editcahoc);
+                }
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+
+            }
+        }
         #endregion
     }
-}

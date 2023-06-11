@@ -2346,6 +2346,7 @@
     <None Include="Areas\Admin\Data\dbQLtrungtam.dbml.layout">
       <DependentUpon>dbQLtrungtam.dbml</DependentUpon>
     </None>
+    <Content Include="Areas\Admin\Views\QLLichhoc\Suacahoc.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

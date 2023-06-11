@@ -749,24 +749,28 @@ namespace EnglishCoucil.Controllers
         #endregion
 
         #region Pay online
+        //public ActionResult total()
+        //{
+        //    double sum = 0;
+        //    var total = data.ChiTietLopHocs.Where(x => x.DaThanhToan != true && x.IDLophoc == (int)Session["IDlh"] && x.IDHocVien == (int)Session["IDhv"]);
+        //    foreach (ChiTietLopHoc price in total)
+        //    {
+        //        sum += price.LopHoc.ChuongTrinhHoc.GiaTien ?? 0;
+        //    }
+        //    ViewBag.Sum = sum;
+        //    return View();
+        //}
+
+        //tính tổng giá tiền mà học viên chưa đóng 
         private double TongTien()
         {
-            double? sum = 0;
-            List<ChiTietLopHoc> listchuongtrinh = data.ChiTietLopHocs.Where(item => item.IDHocVien == (int)Session["IDhv"]).ToList();
-            foreach (ChiTietLopHoc item in listchuongtrinh)
+            double sum = 0;
+            var total = data.ChiTietLopHocs.Where(x => x.DaThanhToan != true && x.IDLophoc == (int)Session["IDlh"] && x.IDHocVien == (int)Session["IDhv"]);
+            foreach (ChiTietLopHoc price in total)
             {
-                LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == item.IDLophoc);
-                if (lopHoc != null)
-                {
-                    ChiTietLopHoc ChuongtrinhForClass = data.ChiTietLopHocs.FirstOrDefault(x => x.IDLophoc == lopHoc.IDLophoc && x.DaThanhToan != true);
-                    if (ChuongtrinhForClass != null)
-                    {
-                        sum += ChuongtrinhForClass.LopHoc.ChuongTrinhHoc.GiaTien;
-                    }
-                }
-
+                sum += price.LopHoc.ChuongTrinhHoc.GiaTien ?? 0;
             }
-            return double.Parse(sum.ToString());
+            return sum;
         }
         public ActionResult PaymentWithPaypal()
         {
@@ -807,25 +811,13 @@ namespace EnglishCoucil.Controllers
                     }
                     else
                     {
-                        List<ChiTietLopHoc> listChiTietLopHoc = new List<ChiTietLopHoc>();
-                        List<ChiTietLopHoc> listchuongtrinh = data.ChiTietLopHocs.Where(item => item.IDHocVien == (int)Session["IDhv"]).ToList();
-                        foreach (ChiTietLopHoc item in listchuongtrinh)
+                        var paymentSource = data.ChiTietLopHocs.Where(x => x.DaThanhToan != true && x.IDLophoc == (int)Session["IDlh"] && x.IDHocVien == (int)Session["IDhv"]);
+                        foreach (ChiTietLopHoc Pay in paymentSource)
                         {
-                            LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == item.IDLophoc);
-                            if (lopHoc != null)
-                            {
-                                List<ChiTietLopHoc> ChuongtrinhForClass = data.ChiTietLopHocs.Where(x => x.IDLophoc == lopHoc.IDLophoc).ToList();
-                                foreach (ChiTietLopHoc payment in ChuongtrinhForClass)
-                                {
-                                    if (payment.DaThanhToan == false)
-                                    {
-                                        payment.DaThanhToan = true;
-                                        payment.NgayNopTien = DateTime.Now;
-                                        data.SubmitChanges();
-                                        Session["CheckPay"] = payment.DaThanhToan;
-                                    }
-                                }
-                            }
+                            Pay.DaThanhToan = true;
+                            Pay.NgayNopTien = DateTime.Now;
+                            data.SubmitChanges();
+                            Session["CheckPay"] = Pay.DaThanhToan;
                         }
                     }
                 }
@@ -862,50 +854,15 @@ namespace EnglishCoucil.Controllers
             {
                 items = new List<Item>()
             };
-            //List<ChiTietLopHoc> listChiTietLopHoc = new List<ChiTietLopHoc>();
-            //List<ChiTietLopHoc> listchuongtrinh = data.ChiTietLopHocs.Where(item => item.IDHocVien == (int)Session["IDhv"]).ToList();
-            //foreach (ChiTietLopHoc item in listchuongtrinh)
-            //{
-            //    LopHoc lopHoc = data.LopHocs.SingleOrDefault(x => x.IDLophoc == item.IDLophoc);
-            //    if (lopHoc != null)
-            //    {
-            //        List<ChiTietLopHoc> ChuongtrinhForClass = data.ChiTietLopHocs.Where(x => x.IDLophoc == lopHoc.IDLophoc).ToList();
-            //        foreach (ChiTietLopHoc payment in ChuongtrinhForClass)
-            //        {
-            //            if (payment.DaThanhToan == false)
-            //            {
-            //                itemList.items.Add(new Item()
-            //                {
-            //                    name ="Thanh toan",
-            //                    currency = "USD",
-            //                    quantity = "1",
-            //                    //price = payment.LopHoc.ChuongTrinhHoc.GiaTien.ToString(),
-            //                    price ="1",
-            //                    sku = "sku"
-            //                });
-            //            }
-            //        }
-            //    }
-            //}
-                             itemList.items.Add(new Item()
+           
+               itemList.items.Add(new Item()
                                                        {
-                                 name = "Thanh toan",
-                                 currency = "USD",
-                                 quantity = "1",
-                                 //price = payment.LopHoc.ChuongTrinhHoc.GiaTien.ToString(),
-                                 price = "1",
-                                 sku = "sku"
-                             });
-
-
-            //itemList.items.Add(new Item()
-            //{
-            //    name = "Item Name comes here",
-            //    currency = "USD",
-            //    price = "1",
-            //    quantity = "1",
-            //    sku = "sku"
-            //});
+                  name = "Thanh toan",
+                  currency = "USD",
+                  quantity = "1",
+                  price = TongTien().ToString(),
+                  sku = "sku"
+               });
 
             // Tạo payer và redirect_urls
             var payer = new Payer()
@@ -919,15 +876,14 @@ namespace EnglishCoucil.Controllers
                 return_url = redirectUrl
             };
             // Adding Tax, shipping and Subtotal details  
-             decimal subtotal = Convert.ToDecimal(TongTien());
             var details = new Details()
             {
                 tax = "1",
                 shipping = "1",
                 //subtotal = "1",
-                subtotal = subtotal.ToString(),
+                subtotal = TongTien().ToString(),
                
-        };
+              };
             var amount = new Amount()
             {
                 currency = "USD",
@@ -961,8 +917,6 @@ namespace EnglishCoucil.Controllers
             }
 
             #endregion
-
-
 
         }
     } 

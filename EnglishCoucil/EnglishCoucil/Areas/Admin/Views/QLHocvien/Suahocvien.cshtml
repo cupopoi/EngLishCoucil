@@ -90,14 +90,6 @@
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
-
-            <div class="form-group">
-                <b> Cấp độ:</b>
-                <div class="col-sm-12">
-                    @Html.EditorFor(model => model.CapDo, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CapDo, "", new { @class = "text-danger" })
-                </div>
-            </div>
             <div class="form-group">
                 <b>Trạng thái học:</b>
                 <div class="col-md-10">
@@ -114,43 +106,48 @@
             </div>
         }
 
-    <div style="text-align:center">
-        <a href=" @Url.Action("Hocvien", "QLHocvien")" class="btn btn-success">Back</a>
-    </div>
+        <div style="text-align:center">
+            <a href=" @Url.Action("Hocvien", "QLHocvien")" class="btn btn-success">Back</a>
+        </div>
     </div>
 </div>
+
 @section upload
 {
     <script>
         $(function () {
+             //khi người dùng nhấn vào nút có id là btnUpload
             $('#btnUpload').click(function () {
+                 //được gọi để kích hoạt sự kiện chọn tệp tin từ người dùng
                 $('#fileUpload').trigger('click');
             });
+             //khi người dùng đã chọn một tệp tin hình ảnh
+            $('#fileUpload').change(function () {
+                  // kiểm tra xem trình duyệt có hỗ trợ đối tượng FormData hay không
+                if (window.FormData !== undefined) {
+                    var fileUpload = $('#fileUpload').get(0);
+                    var files = fileUpload.files;
+                    var formData = new FormData();
+                    formData.append('file', files[0]);
+                     //sử dụng AJAX để gửi yêu cầu POST tới đường dẫn action ProcessUpload trong QLHocvien để xử lý tải lên hình ảnh.
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("ProcessUpload", "QLHocvien", new { area = "Admin" })',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                         // hình ảnh được hiển thị lên trang bằng cách cập nhật thuộc tính src của phần tử có id là pictureUpload
+                       //và lưu vào phần tử có id là Hinh
+                        success: function (urlImage) {
+                            $('#pictureUpload').attr('src', urlImage);
+                            $('#Hinh').val(urlImage);
+                        },
+                        error: function (err) {
+                            alert('Error ' + err.statusText);
+                        }
+                    });
+                }
+            });
         });
-
-        $('#fileUpload').change(function () {
-            if (window.FormData !== undefined) {
-                var fileUpload = $('#fileUpload').get(0);
-                var files = fileUpload.files;
-                var formData = new FormData();
-                formData.append('file', files[0]);
-
-                $.ajax({
-                    type: 'POST',
-                    url: '@Url.Action("ProcessUpload", "QLHocvien", new { area = "Admin" })',
-                    contentType: false,
-                    processData: false,
-                    data: formData,
-                    success: function (urlImage) {
-                        $('#pictureUpload').attr('src', urlImage);
-                        $('#Hinh').val(urlImage);
-                    },
-                    error: function (err) {
-                        alert('Error ' + err.statusText);
-                    }
-                });
-            }
-        });
-
     </script>
 }

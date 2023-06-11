@@ -146,6 +146,7 @@ namespace EnglishCoucil.Areas.Admin.Controllers
                 hocvien.DiaChi = diachi;
                 hocvien.SoDienThoai = sodt;
                 hocvien.Email = email;
+                hocvien.NgayDangKy = DateTime.Now;
                 hocvien.Hinh = collection["Hinh"];
                 hocvien.IDTrangThai = IDtrangthai;
                 data.HocViens.InsertOnSubmit(hocvien);
